@@ -1,16 +1,23 @@
 import { useEffect } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useRouter } from "next/router";
 import { setNav } from "@/store/slices/nav";
+import { Setting } from "@/components/models/setting";
 import PageHead from "@/components/layouts/PageHead";
 import Layout from "@/components/layouts/Layout";
 import { SETUP_NAVS } from "@/components/constants/links";
 import Button, { ButtonType } from "@/components/shared/Button";
 
 export default function Home() {
-  const dispatch = useDispatch();
   const router = useRouter();
+  const dispatch = useDispatch();
+  const settingStatus = useSelector(({ setting }: { setting: Setting }) => setting.status);
+
+
   useEffect(() => {
+    // Check setting status
+    if (!settingStatus) router.replace("settings");
+
     const cleanUp = setTimeout(
       () =>
         dispatch(
@@ -23,7 +30,7 @@ export default function Home() {
     );
 
     return () => clearTimeout(cleanUp);
-  }, [dispatch]);
+  }, [dispatch, settingStatus, router]);
 
   return (
     <>

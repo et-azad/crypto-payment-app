@@ -12,7 +12,7 @@ export default function HeaderDesktop() {
   const path = useRouter().pathname;
 
   return (
-    <header className="bg-white shadow-lg h-18 hidden md:flex fixed top-0 w-full z-10">
+    <header className="bg-white shadow-lg h-18 hidden md:flex fixed top-0 w-full z-10 py-2">
       <Link
         href="/"
         className="flex-shrink-0 flex items-center justify-center px-4 lg:px-6 xl:px-8"
