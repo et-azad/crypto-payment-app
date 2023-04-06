@@ -6,7 +6,7 @@ import headerLogo from "@/public/header-logo.png";
 export default function HeaderMobile() {
   return (
     <header className="bg-white shadow-lg h-18 md:flex fixed top-0 w-full z-10 md:hidden">
-      <div className="py-2 border-t border-gray-700">
+      <div className="py-2">
         <div className="flex items-center px-3">
           <Link
             href="/"

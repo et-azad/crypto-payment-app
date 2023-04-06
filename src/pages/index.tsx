@@ -33,7 +33,7 @@ export default function Home() {
         isSetup
         footerOneliner="Before connecting your wallet, complete the Settings!"
       >
-        <section className="p-4 flex items-center min-h-screen justify-center bg-white">
+        <section className="p-4 py-24 flex items-center min-h-screen justify-center bg-white">
           <div className="mx-auto max-w-[43rem]">
             <Intro
               topHeading="Introducing Crypto Currency Payment"
