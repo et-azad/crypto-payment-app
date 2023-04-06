@@ -16,7 +16,10 @@ export default function Home() {
 
   useEffect(() => {
     // Check setting status
-    if (!settingStatus) router.replace("settings");
+    if (!settingStatus) {
+      
+      router.replace("settings");
+    }
 
     const cleanUp = setTimeout(
       () =>
