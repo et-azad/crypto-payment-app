@@ -38,15 +38,14 @@ export default function Home() {
               <div className="mb-4">
                 <label
                   className="block font-medium text-gray-100 mb-2"
-                  htmlFor="name"
+                  htmlFor="walletAddress"
                 >
-                  Name
+                  Wallet Address
                 </label>
                 <input
                   className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-900 leading-tight focus:outline-none focus:shadow-outline"
-                  id="name"
                   type="text"
-                  placeholder="John Doe"
+                  placeholder="Wallet Address"
                 />
               </div>
               <div className="mb-4">

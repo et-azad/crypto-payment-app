@@ -1,6 +1,7 @@
 export interface AlertOptions {
+  id: number;
   visible: boolean;
-  type: string;
+  type: "warning" | "error" | "success";
   message: string;
 }
 
