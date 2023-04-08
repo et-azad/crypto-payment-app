@@ -14,7 +14,11 @@ export default function Layout({
   return (
     <div className="flex flex-col min-h-screen">
       <Header />
-      <main className="flex-grow">{children}</main>
+      <main className="flex-grow">
+        <section className="p-4 py-24 flex items-center min-h-screen justify-center bg-white">
+          {children}
+        </section>
+      </main>
       {(footerOneliner !== "" || isSetup) && (
         <Footer isSetup={isSetup} footerOneliner={footerOneliner} />
       )}

@@ -26,10 +26,10 @@ export default function HeaderDesktop() {
               <li key={idx} className="p-3 xl:p-6">
                 <Link
                   href={navs.href}
-                  className={`p-2 rounded-md border-2 ${
+                  className={`p-3 rounded-md ${
                     path === navs.href
-                      ? `border-orange-500 border-dashed`
-                      : `border-white hover:border-orange-500 hover:border-dashed`
+                      ? `shadow-md`
+                      : `hover:shadow-md`
                   }`}
                 >
                   <span>{navs.lable}</span>
