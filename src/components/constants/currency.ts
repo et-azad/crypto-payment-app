@@ -1,18 +1,24 @@
-export const availableCurrency = [
+import { CurrencyOptions } from "@/components/models/currency";
+
+export const CURRENCIES: CurrencyOptions[] = [
   {
-    title: "USD",
-    value: "USD",
+    symbol: "$",
+    currency: "USD",
   },
   {
-    title: "GBP",
-    value: "GBP",
+    symbol: "₹",
+    currency: "INR",
   },
   {
-    title: "CAD",
-    value: "CAD",
+    symbol: "£",
+    currency: "GBP",
   },
   {
-    title: "INR",
-    value: "INR",
+    symbol: "$",
+    currency: "CAD",
+  },
+  {
+    symbol: "$",
+    currency: "AUD",
   },
 ];
