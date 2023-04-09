@@ -1,7 +1,10 @@
-import { CURRENCIES } from "@/components/constants/currency";
 import Input from "@/components/shared/Input";
 import Button, { ButtonType } from "@/components/shared/Button";
+import { CURRENCIES } from "@/components/constants/currency";
+import { PROVIDERS } from "@/components/constants/provider";
+import { CONNECTORS } from "@/components/constants/connector";
 import Currency from "@/components/setup/Currency";
+import Provider from "@/components/setup/Provider";
 import Connectors from "@/components/setup/Connectors";
 
 export default function SettingForm() {
@@ -9,8 +12,8 @@ export default function SettingForm() {
 		<form className="rounded-lg shadow-md px-4 py-6">
 			<Input type="text" name="walletAddress" label="Wallet Address" />
 			<Currency currencies={CURRENCIES} />
-			
-			<Connectors />
+			<Provider providers={PROVIDERS} selected="public" />
+			<Connectors connectors={CONNECTORS} />
 
 
 			<div className="p-4 mb-6 text-sm text-orange-800 rounded-lg bg-orange-50 text-center" role="alert">
