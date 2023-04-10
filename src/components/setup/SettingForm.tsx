@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react";
+import { useCallback, useState, FormEvent } from "react";
 import Input from "@/components/shared/Input";
 import Button, { ButtonType } from "@/components/shared/Button";
 import Currency from "@/components/setup/Currency";
@@ -8,17 +8,18 @@ import Networks from "@/components/setup/Networks";
 import { TEST_NETWORKS } from "@/components/constants/network";
 
 export default function SettingForm() {
+
+	// Going to use State for inputs
+
 	const [testPayments, setTestPayments] = useState(false);
-	const saveSettings = useCallback((e: any) => {
+	const saveSettings = useCallback((e: FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
-		const formData = new FormData(e.target);
-		console.log(e.target);
-		console.log(formData);
+
 	}, [])
 
 	return (
 		<form className="rounded-lg shadow-md px-4 py-6" onSubmit={saveSettings}>
-			<Input type="text" name="walletAddress" label="Wallet Address (reciever / marchant)" />
+			<Input type="text" name="walletAddress" label="Wallet Address (receiver)" />
 			<Currency />
 			<Provider />
 			<Connectors />
@@ -43,7 +44,6 @@ export default function SettingForm() {
 				<span className="ml-3 text-md font-medium text-gray-900">{testPayments ? "Disable" : "Enable"} test payments</span>
 			</label>
 			{testPayments && <Networks networks={TEST_NETWORKS} isTest />}
-
 			<Button type="submit" theme={ButtonType.Primary}>Save Setting</Button>
 		</form>
 	)
