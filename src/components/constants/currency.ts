@@ -1,5 +1,10 @@
 import { CurrencyOptions } from "@/components/models/currency";
 
+export const DEFAULT_CURRENCY: CurrencyOptions = {
+  symbol: "$",
+  currency: "USD",
+};
+
 export const CURRENCIES: CurrencyOptions[] = [
   {
     symbol: "$",

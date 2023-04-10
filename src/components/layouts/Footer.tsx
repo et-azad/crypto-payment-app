@@ -20,7 +20,7 @@ export default function Footer({
           )}
           <div className="order-3 flex-shrink-0 w-full sm:order-2 sm:mt-0 sm:w-auto">
             {isSetup && (
-              <Button type={ButtonType.Primary} isFullWidth pulse thunderIcon>
+              <Button theme={ButtonType.Primary} isFullWidth pulse thunderIcon>
                 Connect Wallet
               </Button>
             )}

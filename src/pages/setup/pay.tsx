@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useRouter } from "next/router";
 import { setNav } from "@/store/slices/nav";
@@ -6,6 +6,7 @@ import { addAlert } from "@/store/slices/alert";
 import { Setting } from "@/components/models/setting";
 import PageHead from "@/components/layouts/PageHead";
 import Layout from "@/components/layouts/Layout";
+import Input from "@/components/shared/Input";
 import { SETUP_NAVS } from "@/components/constants/links";
 import Button, { ButtonType } from "@/components/shared/Button";
 
@@ -13,6 +14,7 @@ export default function Home() {
   const router = useRouter();
   const dispatch = useDispatch();
   const settingStatus = useSelector(({ setting }: { setting: Setting }) => setting.status);
+  const [amount, setAmount] = useState(null);
 
   useEffect(() => {
     const cleanUp = setTimeout(
@@ -25,7 +27,7 @@ export default function Home() {
             type: "warning",
             message: "Please complete the Settings first!"
           }));
-          router.replace("settings");
+          // router.replace("settings");
         }
 
         dispatch(
@@ -47,27 +49,14 @@ export default function Home() {
         isSetup
         footerOneliner="Completed the Setting? start accepting Payments!"
       >
-        {settingStatus ? (
-          <form className="bg-gray-800 rounded-lg shadow-md px-6 py-4">
-            <label
-              className="block font-medium text-gray-100 mb-2"
-              htmlFor="name"
-            >
-              Amount
-            </label>
-            <div className="mb-4 flex">
-              <span className="inline-flex items-center px-3 text-sm bg-gray-800 border border-r-0 border-gray-300 text-gray-300 rounded-l-md">
-                USD
-              </span>
-              <input
-                className="rounded-none rounded-r-lg shadow appearance-none border rounded w-full py-2 px-3 text-gray-900 leading-tight focus:outline-none focus:shadow-outline"
-                type="text"
-                placeholder="10.25"
-              />
-            </div>
-            <Button type={ButtonType.Primary}>Start Payment</Button>
-          </form>
-        ) : (<h1>Setup not completed!</h1>)}
+        <div className="w-full md:w-4/12">
+          {!settingStatus ? (
+            <form className="rounded-lg shadow-md px-4 py-6">
+              <Input type="number" name="amount" label="Enter Amount (in USD)" />
+              <Button type="submit" theme={ButtonType.Primary}>Start Payment</Button>
+            </form>
+          ) : (<h1>Setup not completed!</h1>)}
+        </div>
       </Layout>
     </>
   );

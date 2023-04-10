@@ -39,7 +39,7 @@ export default function HeaderDesktop() {
         </ul>
       </nav>
       <div className="flex items-center px-4 lg:px-6 xl:px-8">
-        <Button type={ButtonType.Primary} isFullWidth pulse thunderIcon>
+        <Button theme={ButtonType.Primary} isFullWidth pulse thunderIcon>
           Connect Wallet
         </Button>
       </div>

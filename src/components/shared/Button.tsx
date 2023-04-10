@@ -8,14 +8,16 @@ export enum ButtonType {
 }
 
 export default function Button({
-  type = ButtonType.Secondary,
+  type = "button",
+  theme = ButtonType.Secondary,
   isFullWidth = false,
   pulse = false,
   thunderIcon = false,
   onClick,
   children,
 }: {
-  type?: ButtonType;
+  type?: "button" | "submit";
+  theme?: ButtonType;
   isFullWidth?: boolean;
   pulse?: boolean;
   thunderIcon?: boolean;
@@ -23,7 +25,7 @@ export default function Button({
   children: ReactNode;
 }) {
   return (
-    <button className={`${type} ${isFullWidth && `w-full`}`} onClick={onClick}>
+    <button type={type} className={`${theme} ${isFullWidth && `w-full`}`} onClick={onClick}>
       {children}
       {thunderIcon && <ThunderIcon />}
       {pulse && <TopPulse />}

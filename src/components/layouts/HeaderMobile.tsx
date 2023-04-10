@@ -15,7 +15,7 @@ export default function HeaderMobile() {
             <Image src={headerLogo} className="h-16 max-w-min" alt="Logo" />
           </Link>
           <div className="ml-auto flex-shrink-0">
-            <Button type={ButtonType.Primary} isFullWidth pulse thunderIcon>
+            <Button theme={ButtonType.Primary} isFullWidth pulse thunderIcon>
               Connect Wallet
             </Button>
           </div>

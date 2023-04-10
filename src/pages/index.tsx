@@ -43,7 +43,7 @@ export default function Home() {
           </Intro>
           <div className="mt-6 flex items-center justify-center gap-4">
             <Button
-              type={ButtonType.Primary}
+              theme={ButtonType.Primary}
               pulse
               onClick={() => router.push("/setup/pay")}
             >

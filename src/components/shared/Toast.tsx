@@ -6,7 +6,7 @@ export default function Toast() {
     const alerts = useSelector(({ alert }: { alert: Alert }) => alert.alerts);
 
     return (
-        <div className="grid gap-1 fixed bottom-20 right-3">
+        <div className="grid gap-1 fixed top-24 right-3">
             {alerts.map((alert: AlertOptions) => <ToastCard key={alert.id} alert={alert} />)}
         </div>
     )
