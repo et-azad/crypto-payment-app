@@ -1,17 +1,19 @@
 import { CurrencyOptions } from "@/components/models/currency";
-import { CURRENCIES, DEFAULT_CURRENCY } from "@/components/constants/currency";
+import { CURRENCIES } from "@/components/constants/currency";
 
 export default function Currency({
-  selected = DEFAULT_CURRENCY,
+  selected,
+  onUpdateSelected,
 }: {
-  selected?: CurrencyOptions
+  selected: CurrencyOptions;
+  onUpdateSelected: (updateSelected: CurrencyOptions) => void;
 }) {
   return (
     <>
       <h3 className="mb-2 text-lg font-medium text-gray-900">Select Currency</h3>
       <ul className="grid w-full gap-2 md:grid-cols-6 grid-cols-4 mb-6">
         {CURRENCIES.map((currency: CurrencyOptions) => (
-          <li key={currency.currency}>
+          <li key={currency.currency} onClick={() => onUpdateSelected(currency)}>
             <input
               type="radio"
               name="currency"

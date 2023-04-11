@@ -1,3 +1,4 @@
+import { ChangeEvent } from "react";
 
 export default function Input(
 	{
@@ -7,7 +8,8 @@ export default function Input(
 		value,
 		required,
 		disabled,
-		errorMessage
+		errorMessage,
+		onChange,
 	}: {
 		type: "text" | "number";
 		name: string;
@@ -16,6 +18,7 @@ export default function Input(
 		required?: boolean;
 		disabled?: boolean;
 		errorMessage?: string;
+		onChange?: (e: ChangeEvent<HTMLInputElement>) => void;
 	}
 ) {
 	return (
@@ -29,6 +32,7 @@ export default function Input(
 				required={required}
 				disabled={disabled}
 				placeholder=" "
+				onChange={onChange}
 			/>
 			<label
 				htmlFor={name}
