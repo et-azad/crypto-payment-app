@@ -63,6 +63,7 @@ export default function SettingForm() {
 	// Save Settings
 	const handleSaveSettings = useCallback((e: FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
+		
 		if (provider.hasApiKey) provider.apiKey = providerApiKey;
 		console.log({
 			walletAddress,
