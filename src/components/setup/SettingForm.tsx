@@ -1,4 +1,6 @@
 import { useCallback, useState, FormEvent, ChangeEvent } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { addAlert } from "@/store/slices/alert";
 import Input from "@/components/shared/Input";
 import Button, { ButtonType } from "@/components/shared/Button";
 import Currency from "@/components/setup/Currency";
@@ -16,6 +18,8 @@ import { NETWORKS } from "@/components/constants/network";
 import { TEST_NETWORKS } from "@/components/constants/network";
 
 export default function SettingForm() {
+	const dispatch = useDispatch();
+
 	const [walletAddress, setWalletAddress] = useState<string>("");
 	const [currency, setCurrency] = useState<CurrencyOptions>(DEFAULT_CURRENCY);
 	const [provider, setProvider] = useState<ProviderOptions>(DEFAULT_PROVIDER);
@@ -60,10 +64,29 @@ export default function SettingForm() {
 		return network;
 	})), []);
 
+	const handleValidationMessage = useCallback((type: "warning" | "error" | "success", message: string) => {
+		dispatch(addAlert({
+			id: Math.floor(Math.random() * 100000) + 1,
+			visible: true,
+			type: type,
+			message: message
+		}));
+		// Scroll to top
+		if (typeof window !== 'undefined') window.scrollTo({ top: 0, behavior: 'smooth' });
+	}, [dispatch]);
+
 	// Save Settings
 	const handleSaveSettings = useCallback((e: FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
-		
+
+		// Checking Wallet Address
+		if (!walletAddress) {
+			handleValidationMessage("warning", "Please enter you Wallet Address");
+			return;
+		}
+		// Will check Wallet Address complete validation
+
+
 		if (provider.hasApiKey) provider.apiKey = providerApiKey;
 		console.log({
 			walletAddress,
@@ -76,6 +99,7 @@ export default function SettingForm() {
 		});
 
 	}, [
+		handleValidationMessage,
 		walletAddress,
 		currency,
 		provider,

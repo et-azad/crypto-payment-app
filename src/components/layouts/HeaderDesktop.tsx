@@ -23,7 +23,7 @@ export default function HeaderDesktop() {
         <ul className="flex items-center ml-4 xl:ml-8 mr-auto">
           {navOption.show &&
             navOption.links.map((navs: NavLink, idx: number) => (
-              <li key={idx} className="p-3 xl:p-6">
+              <li key={idx} className="p-3">
                 <Link
                   href={navs.href}
                   className={`p-3 rounded-md ${

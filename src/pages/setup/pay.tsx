@@ -27,7 +27,7 @@ export default function Home() {
             type: "warning",
             message: "Please complete the Settings first!"
           }));
-          // router.replace("settings");
+          router.replace("settings");
         }
 
         dispatch(
@@ -50,12 +50,12 @@ export default function Home() {
         footerOneliner="Completed the Setting? start accepting Payments!"
       >
         <div className="w-full md:w-4/12">
-          {!settingStatus ? (
+          {settingStatus ? (
             <form className="rounded-lg shadow-md px-4 py-6">
               <Input type="number" name="amount" label="Enter Amount (in USD)" />
               <Button type="submit" theme={ButtonType.Primary}>Start Payment</Button>
             </form>
-          ) : (<h1>Setup not completed!</h1>)}
+          ) : (<h1 className="text-center">Setup not completed!</h1>)}
         </div>
       </Layout>
     </>
