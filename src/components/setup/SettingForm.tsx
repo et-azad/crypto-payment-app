@@ -1,6 +1,8 @@
-import { useCallback, useState, FormEvent, ChangeEvent } from "react";
+import { useCallback, useState, FormEvent, ChangeEvent, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { addAlert } from "@/store/slices/alert";
+import { Setting, SettingOptions } from "@/components/models/setting";
+import { updateSetting } from "@/store/slices/setting";
+import useToast from "@/hooks/useToast";
 import Input from "@/components/shared/Input";
 import Button, { ButtonType } from "@/components/shared/Button";
 import Currency from "@/components/setup/Currency";
@@ -19,6 +21,8 @@ import { TEST_NETWORKS } from "@/components/constants/network";
 
 export default function SettingForm() {
 	const dispatch = useDispatch();
+	const { pushToast } = useToast();
+	const { status, options } = useSelector(({ setting }: { setting: Setting }) => setting);
 
 	const [walletAddress, setWalletAddress] = useState<string>("");
 	const [currency, setCurrency] = useState<CurrencyOptions>(DEFAULT_CURRENCY);
@@ -64,42 +68,81 @@ export default function SettingForm() {
 		return network;
 	})), []);
 
-	const handleValidationMessage = useCallback((type: "warning" | "error" | "success", message: string) => {
-		dispatch(addAlert({
-			id: Math.floor(Math.random() * 100000) + 1,
-			visible: true,
-			type: type,
-			message: message
-		}));
-		// Scroll to top
-		if (typeof window !== 'undefined') window.scrollTo({ top: 0, behavior: 'smooth' });
-	}, [dispatch]);
-
 	// Save Settings
 	const handleSaveSettings = useCallback((e: FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
 
 		// Checking Wallet Address
 		if (!walletAddress) {
-			handleValidationMessage("warning", "Please enter you Wallet Address");
+			pushToast("warning", "Enter your Wallet Address");
 			return;
 		}
-		// Will check Wallet Address complete validation
-
-
-		if (provider.hasApiKey) provider.apiKey = providerApiKey;
-		console.log({
-			walletAddress,
-			currency,
-			provider,
-			connectors,
-			networks,
-			sessionTimout,
-			testNetworks
-		});
-
+		// Checking Provider Api Key
+		if (provider.hasApiKey) {
+			if (!providerApiKey) {
+				pushToast("warning", `Enter your ${provider.title} Api Key`);
+				return;
+			}
+			provider.apiKey = providerApiKey;
+		}
+		// Checking Connectors
+		let connectorSelected = false;
+		let connectorApiKeyMissing = false;
+		connectors.forEach((connector: ConnectorOptions) => {
+			if (connector.selected) {
+				connectorSelected = true;
+				if (connector.hasKey && !connector.key) {
+					pushToast("warning", `Enter your ${connector.title} ${connector.keyInfo}`);
+					connectorApiKeyMissing = true;
+				}
+			}
+		})
+		if (!connectorSelected) {
+			pushToast("warning", `Select a Connector`);
+			return;
+		}
+		if (connectorApiKeyMissing) return;
+		// Checking Networks
+		let networkSelected = false;
+		networks.forEach((network: NetworkOptions) => {
+			if (network.selected) networkSelected = true;
+		})
+		if (!networkSelected) {
+			pushToast("warning", `Select a Network`);
+			return;
+		}
+		// Checking Session Timout
+		if (sessionTimout < 300) {
+			pushToast("warning", `Session timout must be greater than 300 secs`);
+			return;
+		}
+		// Checking Networks
+		let testNetworkSelected = false;
+		testNetworks.forEach((network: NetworkOptions) => {
+			if (network.selected) testNetworkSelected = true;
+		})
+		if (!testNetworkSelected) {
+			pushToast("warning", `Either select a Test Network or disable the option`);
+			return;
+		}
+		// Updating Settings
+		dispatch(updateSetting({
+			status: true,
+			options: {
+				_walletAddress: walletAddress,
+				_currency: currency,
+				_provider: provider,
+				_providerApiKey: providerApiKey,
+				_connectors: connectors,
+				_networks: networks,
+				_sessionTimout: sessionTimout,
+				_testPayments: testPayments,
+				_testNetworks: testNetworks
+			}
+		}))
 	}, [
-		handleValidationMessage,
+		pushToast,
+		dispatch,
 		walletAddress,
 		currency,
 		provider,
@@ -107,8 +150,23 @@ export default function SettingForm() {
 		connectors,
 		networks,
 		sessionTimout,
+		testPayments,
 		testNetworks
 	]);
+
+	useEffect(() => {
+		if (status) {
+			setWalletAddress(options._walletAddress);
+			setCurrency(options._currency);
+			setProvider(options._provider);
+			setProviderApiKey(options._providerApiKey);
+			setConnectors(options._connectors);
+			setNetworks(options._networks);
+			setSessionTimeout(options._sessionTimout);
+			setTestPayments(options._testPayments);
+			setTestNetworks(options._testNetworks);
+		}
+	}, [status, options]);
 
 	return (
 		<form className="rounded-lg shadow-md px-4 py-6" onSubmit={handleSaveSettings}>
@@ -122,7 +180,7 @@ export default function SettingForm() {
 			</div>
 			<Input type="number" name="sessionTimout" label="Session Timeout (in secs)" value={sessionTimout} onChange={handleSessionTimeoutChange} />
 			<label className="relative inline-flex items-center cursor-pointer mb-6">
-				<input type="checkbox" name="testNetwork" className="sr-only peer" onChange={() => setTestPayments(prev => !prev)} />
+				<input type="checkbox" name="testNetwork" className="sr-only peer" onChange={() => setTestPayments(prev => !prev)} checked={testPayments} />
 				<div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-orange-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-orange-600"></div>
 				<span className="ml-3 text-md font-medium text-gray-900">{testPayments ? "Disable" : "Enable"} test payments</span>
 			</label>
