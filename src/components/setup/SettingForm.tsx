@@ -1,71 +1,81 @@
 import { useCallback, useState, FormEvent, ChangeEvent, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Setting, SettingOptions } from "@/components/models/setting";
-import { updateSetting } from "@/store/slices/setting";
 import useToast from "@/hooks/useToast";
+import { Setting } from "@/components/models/setting";
+import { updateSetting } from "@/store/slices/setting";
 import Input from "@/components/shared/Input";
 import Button, { ButtonType } from "@/components/shared/Button";
 import Currency from "@/components/setup/Currency";
 import { CurrencyOptions } from "@/components/models/currency";
-import { DEFAULT_CURRENCY } from "@/components/constants/currency";
 import Provider from "@/components/setup/Provider";
 import { ProviderOptions } from "@/components/models/provider";
-import { DEFAULT_PROVIDER } from "@/components/constants/provider";
 import Connectors from "@/components/setup/Connectors";
 import { ConnectorOptions } from "@/components/models/connector";
-import { CONNECTORS } from "@/components/constants/connector";
 import Networks from "@/components/setup/Networks";
 import { NetworkOptions } from "@/components/models/network";
-import { NETWORKS } from "@/components/constants/network";
-import { TEST_NETWORKS } from "@/components/constants/network";
 
 export default function SettingForm() {
 	const dispatch = useDispatch();
 	const { pushToast } = useToast();
-	const { status, options } = useSelector(({ setting }: { setting: Setting }) => setting);
+	const setting = useSelector(({ setting }: { setting: Setting }) => setting);
+	const {
+		_walletAddress,
+		_currency,
+		_provider,
+		_providerApiKey,
+		_connectors,
+		_networks,
+		_sessionTimout,
+		_testPayments,
+		_testNetworks
+	} = setting.options;
 
-	const [walletAddress, setWalletAddress] = useState<string>("");
-	const [currency, setCurrency] = useState<CurrencyOptions>(DEFAULT_CURRENCY);
-	const [provider, setProvider] = useState<ProviderOptions>(DEFAULT_PROVIDER);
-	const [providerApiKey, setProviderApiKey] = useState<string>("");
-	const [connectors, setConnectors] = useState<ConnectorOptions[]>(CONNECTORS);
-	const [networks, setNetworks] = useState<NetworkOptions[]>(NETWORKS);
-	const [sessionTimout, setSessionTimeout] = useState<number>(300);
-	const [testPayments, setTestPayments] = useState(false);
-	const [testNetworks, setTestNetworks] = useState<NetworkOptions[]>(TEST_NETWORKS);
+	const [walletAddress, setWalletAddress] = useState<string>(_walletAddress);
+	const [currency, setCurrency] = useState<CurrencyOptions>(_currency);
+	const [provider, setProvider] = useState<ProviderOptions>(_provider);
+	const [providerApiKey, setProviderApiKey] = useState<string>(_providerApiKey);
+	const [connectors, setConnectors] = useState<ConnectorOptions[]>(_connectors);
+	const [networks, setNetworks] = useState<NetworkOptions[]>(_networks);
+	const [sessionTimout, setSessionTimeout] = useState<number>(_sessionTimout);
+	const [testPayments, setTestPayments] = useState(_testPayments);
+	const [testNetworks, setTestNetworks] = useState<NetworkOptions[]>(_testNetworks);
 
 	const handleWalletAddressChange = useCallback((e: ChangeEvent<HTMLInputElement>) => setWalletAddress(e.target.value), []);
 	const handleCurrencyUpdate = useCallback((updateSelected: CurrencyOptions) => setCurrency(updateSelected), []);
 	const handleProviderUpdate = useCallback((updateSelected: ProviderOptions) => setProvider(updateSelected), []);
 	const handleProviderApiKeyUpdate = useCallback((e: ChangeEvent<HTMLInputElement>) => setProviderApiKey(e.target.value), []);
 	const handleConnectorToggle = useCallback((e: ChangeEvent<HTMLInputElement>) => setConnectors(prev => prev.map(connector => {
-		if (connector.connector === e.target.value) {
-			connector.selected = e.target.checked;
-			return connector;
+		const updateConnector = { ...connector };
+		if (updateConnector.connector === e.target.value) {
+			updateConnector.selected = e.target.checked;
+			return updateConnector;
 		}
-		return connector;
+		return updateConnector;
 	})), []);
-	const handleConnectorKeyKeyUpdate = useCallback((e: ChangeEvent<HTMLInputElement>) => setConnectors(prev => prev.map(connector => {
-		if (connector.connector === e.target.name) {
-			connector.key = e.target.value;
-			return connector;
+	const handleConnectorKeyUpdate = useCallback((e: ChangeEvent<HTMLInputElement>) => setConnectors(prev => prev.map(connector => {
+		const updateConnector = { ...connector };
+		if (updateConnector.connector === e.target.name) {
+			updateConnector.key = e.target.value;
+			return updateConnector;
 		}
-		return connector;
+		return updateConnector;
 	})), []);
 	const handleNetworkToggle = useCallback((e: ChangeEvent<HTMLInputElement>) => setNetworks(prev => prev.map(network => {
-		if (network.network === e.target.value) {
-			network.selected = e.target.checked;
-			return network;
+		const updateNetwork = { ...network };
+		if (updateNetwork.network === e.target.value) {
+			updateNetwork.selected = e.target.checked;
+			return updateNetwork;
 		}
-		return network;
+		return updateNetwork;
 	})), []);
 	const handleSessionTimeoutChange = useCallback((e: ChangeEvent<HTMLInputElement>) => setSessionTimeout(+e.target.value), []);
 	const handleTestNetworkToggle = useCallback((e: ChangeEvent<HTMLInputElement>) => setTestNetworks(prev => prev.map(network => {
-		if (network.network === e.target.value) {
-			network.selected = e.target.checked;
-			return network;
+		const updateNetwork = { ...network };
+		if (updateNetwork.network === e.target.value) {
+			updateNetwork.selected = e.target.checked;
+			return updateNetwork;
 		}
-		return network;
+		return updateNetwork;
 	})), []);
 
 	// Save Settings
@@ -83,7 +93,11 @@ export default function SettingForm() {
 				pushToast("warning", `Enter your ${provider.title} Api Key`);
 				return;
 			}
-			provider.apiKey = providerApiKey;
+			setProvider(prev => ({
+				apiKey: providerApiKey,
+				...prev
+			}))
+			// provider.apiKey = providerApiKey;
 		}
 		// Checking Connectors
 		let connectorSelected = false;
@@ -126,20 +140,22 @@ export default function SettingForm() {
 			return;
 		}
 		// Updating Settings
+		const updatedOptions = {
+			_walletAddress: walletAddress,
+			_currency: currency,
+			_provider: provider,
+			_providerApiKey: providerApiKey,
+			_connectors: connectors,
+			_networks: networks,
+			_sessionTimout: sessionTimout,
+			_testPayments: testPayments,
+			_testNetworks: testNetworks
+		}
 		dispatch(updateSetting({
 			status: true,
-			options: {
-				_walletAddress: walletAddress,
-				_currency: currency,
-				_provider: provider,
-				_providerApiKey: providerApiKey,
-				_connectors: connectors,
-				_networks: networks,
-				_sessionTimout: sessionTimout,
-				_testPayments: testPayments,
-				_testNetworks: testNetworks
-			}
+			options: updatedOptions
 		}))
+		localStorage.setItem("_settings", JSON.stringify(updatedOptions))
 	}, [
 		pushToast,
 		dispatch,
@@ -155,25 +171,26 @@ export default function SettingForm() {
 	]);
 
 	useEffect(() => {
-		if (status) {
-			setWalletAddress(options._walletAddress);
-			setCurrency(options._currency);
-			setProvider(options._provider);
-			setProviderApiKey(options._providerApiKey);
-			setConnectors(options._connectors);
-			setNetworks(options._networks);
-			setSessionTimeout(options._sessionTimout);
-			setTestPayments(options._testPayments);
-			setTestNetworks(options._testNetworks);
-		}
-	}, [status, options]);
+		const cleanUp = setTimeout(() => {
+			setWalletAddress(setting.options._walletAddress);
+			setCurrency(setting.options._currency);
+			setProvider(setting.options._provider);
+			setProviderApiKey(setting.options._providerApiKey);
+			setConnectors(setting.options._connectors);
+			setNetworks(setting.options._networks);
+			setSessionTimeout(setting.options._sessionTimout);
+			setTestPayments(setting.options._testPayments);
+			setTestNetworks(setting.options._testNetworks);
+		}, 500);
+		return () => clearTimeout(cleanUp);
+	}, [setting]);
 
 	return (
 		<form className="rounded-lg shadow-md px-4 py-6" onSubmit={handleSaveSettings}>
 			<Input type="text" name=" setWalletAddress" label="Wallet Address (receiver)" value={walletAddress} onChange={handleWalletAddressChange} />
 			<Currency selected={currency} onUpdateSelected={handleCurrencyUpdate} />
 			<Provider selected={provider} apiKey={providerApiKey} onUpdateSelected={handleProviderUpdate} onUpdateApiKey={handleProviderApiKeyUpdate} />
-			<Connectors connectors={connectors} onToggleConnector={handleConnectorToggle} onKeyUpdate={handleConnectorKeyKeyUpdate} />
+			<Connectors connectors={connectors} onToggleConnector={handleConnectorToggle} onKeyUpdate={handleConnectorKeyUpdate} />
 			<Networks networks={networks} onToggleNetwork={handleNetworkToggle} />
 			<div className="p-4 mb-6 text-sm text-orange-800 rounded-lg bg-orange-50 text-center" role="alert">
 				<span className="font-medium">Extra Options</span>

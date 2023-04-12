@@ -9,7 +9,7 @@ export default function SyncData() {
 
   useEffect(() => {
     const setting: SettingOptions = JSON.parse(
-      localStorage.getItem("setting") || "{}"
+      localStorage.getItem("_settings") || "{}"
     );
     if (Object.keys(setting).length !== 0) dispatch(updateSetting({
       status: true,
