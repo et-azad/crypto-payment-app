@@ -13,6 +13,7 @@ export interface SettingOptions {
   _sessionTimout: number;
   _testPayments: boolean;
   _testNetworks: NetworkOptions[];
+  _amount: number;
 }
 
 export interface Setting {

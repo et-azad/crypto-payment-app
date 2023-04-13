@@ -15,6 +15,7 @@ const options: SettingOptions = {
   _sessionTimout: 300,
   _testPayments: false,
   _testNetworks: TEST_NETWORKS,
+  _amount: 0.0,
 };
 const initialState: Setting = {
   status: false,
@@ -29,8 +30,11 @@ const settingSlice = createSlice({
       state.status = payload.status;
       state.options = payload.options;
     },
+    updateAmount(state, { payload }: { payload: number }) {
+      state.options._amount = payload;
+    },
   },
 });
 
-export const { updateSetting } = settingSlice.actions;
+export const { updateSetting, updateAmount } = settingSlice.actions;
 export default settingSlice.reducer;

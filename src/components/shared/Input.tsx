@@ -6,6 +6,7 @@ export default function Input(
 		name,
 		label,
 		value,
+		step,
 		required,
 		disabled,
 		errorMessage,
@@ -15,6 +16,7 @@ export default function Input(
 		name: string;
 		label: string;
 		value?: any;
+		step?: any;
 		required?: boolean;
 		disabled?: boolean;
 		errorMessage?: string;
@@ -28,6 +30,7 @@ export default function Input(
 				type={type}
 				name={name}
 				defaultValue={value}
+				step={step}
 				className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-orange-600 peer"
 				required={required}
 				disabled={disabled}

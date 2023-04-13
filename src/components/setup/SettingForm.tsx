@@ -27,7 +27,8 @@ export default function SettingForm() {
 		_networks,
 		_sessionTimout,
 		_testPayments,
-		_testNetworks
+		_testNetworks,
+		_amount
 	} = setting.options;
 
 	const [walletAddress, setWalletAddress] = useState<string>(_walletAddress);
@@ -149,13 +150,15 @@ export default function SettingForm() {
 			_networks: networks,
 			_sessionTimout: sessionTimout,
 			_testPayments: testPayments,
-			_testNetworks: testNetworks
+			_testNetworks: testNetworks,
+			_amount: _amount,
 		}
 		dispatch(updateSetting({
 			status: true,
 			options: updatedOptions
 		}))
 		localStorage.setItem("_settings", JSON.stringify(updatedOptions))
+		pushToast("success", "Setting saved successfully")
 	}, [
 		pushToast,
 		dispatch,
@@ -167,20 +170,32 @@ export default function SettingForm() {
 		networks,
 		sessionTimout,
 		testPayments,
-		testNetworks
+		testNetworks,
+		_amount
 	]);
 
 	useEffect(() => {
 		const cleanUp = setTimeout(() => {
-			setWalletAddress(setting.options._walletAddress);
-			setCurrency(setting.options._currency);
-			setProvider(setting.options._provider);
-			setProviderApiKey(setting.options._providerApiKey);
-			setConnectors(setting.options._connectors);
-			setNetworks(setting.options._networks);
-			setSessionTimeout(setting.options._sessionTimout);
-			setTestPayments(setting.options._testPayments);
-			setTestNetworks(setting.options._testNetworks);
+			const {
+				_walletAddress,
+				_currency,
+				_provider,
+				_providerApiKey,
+				_connectors,
+				_networks,
+				_sessionTimout,
+				_testPayments,
+				_testNetworks
+			} = setting.options;
+			setWalletAddress(_walletAddress);
+			setCurrency(_currency);
+			setProvider(_provider);
+			setProviderApiKey(_providerApiKey);
+			setConnectors(_connectors);
+			setNetworks(_networks);
+			setSessionTimeout(_sessionTimout);
+			setTestPayments(_testPayments);
+			setTestNetworks(_testNetworks);
 		}, 500);
 		return () => clearTimeout(cleanUp);
 	}, [setting]);

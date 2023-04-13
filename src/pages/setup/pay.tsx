@@ -1,35 +1,30 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useRouter } from "next/router";
+import useToast from "@/hooks/useToast";
 import { setNav } from "@/store/slices/nav";
-import { addAlert } from "@/store/slices/alert";
 import { Setting } from "@/components/models/setting";
 import PageHead from "@/components/layouts/PageHead";
 import Layout from "@/components/layouts/Layout";
-import Input from "@/components/shared/Input";
+
 import { SETUP_NAVS } from "@/components/constants/links";
-import Button, { ButtonType } from "@/components/shared/Button";
+import PayForm from "@/components/setup/PayForm";
 
 export default function Home() {
   const router = useRouter();
   const dispatch = useDispatch();
-  const settingStatus = useSelector(({ setting }: { setting: Setting }) => setting.status);
-  const [amount, setAmount] = useState(null);
+  const { pushToast } = useToast();
+  const { status, options } = useSelector(({ setting }: { setting: Setting }) => setting);
+  const { _currency } = options;
 
   useEffect(() => {
     const cleanUp = setTimeout(
       () => {
         // Check setting status
-        if (!settingStatus) {
-          dispatch(addAlert({
-            id: Math.floor(Math.random() * 100000) + 1,
-            visible: true,
-            type: "warning",
-            message: "Please complete the Settings first!"
-          }));
+        if (!status) {
+          pushToast("warning", "Please complete the Settings first!")
           router.replace("settings");
         }
-
         dispatch(
           setNav({
             show: true,
@@ -38,9 +33,8 @@ export default function Home() {
         )
       }, 500
     );
-
     return () => clearTimeout(cleanUp);
-  }, [dispatch, settingStatus, router]);
+  }, [dispatch, pushToast, status, router]);
 
   return (
     <>
@@ -50,14 +44,9 @@ export default function Home() {
         footerOneliner="Completed the Setting? start accepting Payments!"
       >
         <div className="w-full md:w-4/12">
-          {settingStatus ? (
-            <form className="rounded-lg shadow-md px-4 py-6">
-              <Input type="number" name="amount" label="Enter Amount (in USD)" />
-              <Button type="submit" theme={ButtonType.Primary}>Start Payment</Button>
-            </form>
-          ) : (<h1 className="text-center">Setup not completed!</h1>)}
+          {status ? <PayForm currency={_currency} /> : <h1 className="text-center">Setup not completed!</h1>}
         </div>
-      </Layout>
+      </Layout >
     </>
   );
 }

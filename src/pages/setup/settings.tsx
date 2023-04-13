@@ -21,7 +21,6 @@ export default function Home() {
         ),
       500
     );
-
     return () => clearTimeout(cleanUp);
   }, [dispatch]);
 
