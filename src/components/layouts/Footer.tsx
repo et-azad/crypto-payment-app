@@ -19,10 +19,15 @@ export default function Footer({
             </div>
           )}
           <div className="order-3 flex-shrink-0 w-full sm:order-2 sm:mt-0 sm:w-auto">
-            {isSetup && (
+            {isSetup ? (
               <Button theme={ButtonType.Primary} isFullWidth pulse thunderIcon>
                 Connect Wallet
               </Button>
+            ) : (
+              <p className="font-medium text-[16px] flex items-center justify-center px-5 py-2 rounded-xl text-white shadow-glass w-full">
+                Session will expire in - <span className="text-orange-400 ml-1">10:00
+                </span>
+              </p>
             )}
           </div>
         </div>

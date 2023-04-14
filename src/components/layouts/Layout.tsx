@@ -19,9 +19,7 @@ export default function Layout({
           {children}
         </section>
       </main>
-      {(footerOneliner !== "" || isSetup) && (
-        <Footer isSetup={isSetup} footerOneliner={footerOneliner} />
-      )}
+      <Footer isSetup={isSetup} footerOneliner={footerOneliner} />
     </div>
   );
 }

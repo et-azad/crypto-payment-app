@@ -6,7 +6,6 @@ import { setNav } from "@/store/slices/nav";
 import { Setting } from "@/components/models/setting";
 import PageHead from "@/components/layouts/PageHead";
 import Layout from "@/components/layouts/Layout";
-
 import { SETUP_NAVS } from "@/components/constants/links";
 import PayForm from "@/components/setup/PayForm";
 

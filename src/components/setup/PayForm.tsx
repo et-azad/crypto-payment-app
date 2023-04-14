@@ -1,16 +1,18 @@
 import { ChangeEvent, FormEvent, useCallback, useState } from "react";
 import useToast from "@/hooks/useToast";
+import { useRouter } from "next/router";
+import { setCookie } from "cookies-next";
 import { SyncLoader } from "react-spinners";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { updateAmount } from "@/store/slices/setting";
 import { SettingOptions } from "@/components/models/setting";
 import Input from "@/components/shared/Input";
 import Button, { ButtonType } from "@/components/shared/Button";
 
 export default function PayForm({ options }: { options: SettingOptions }) {
-  
   const { pushToast } = useToast();
   const dispatch = useDispatch();
+  const router = useRouter();
   const [amount, setAmount] = useState<number>();
   const [paymentInitiated, setPaymentInitiated] = useState(false);
   const { _currency } = options;
@@ -28,7 +30,11 @@ export default function PayForm({ options }: { options: SettingOptions }) {
       _amount: amount
     }));
     setPaymentInitiated(true);
-  }, [pushToast, dispatch, options, amount])
+    // Generating token
+    const _token = Math.random().toString(36).substring(2, 15); // Will use JWT with Node
+    setCookie("_token", _token, { maxAge: options._sessionTimout });
+    router.push(`/gateway/connect`);
+  }, [pushToast, dispatch, router, options, amount])
 
   return (
     <form className="rounded-lg shadow-md px-4 py-6" onSubmit={handleStartPayment}>
