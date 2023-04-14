@@ -15,7 +15,7 @@ const options: SettingOptions = {
   _sessionTimout: 300,
   _testPayments: false,
   _testNetworks: TEST_NETWORKS,
-  _amount: 0.0,
+  _amount: 0.00,
 };
 const initialState: Setting = {
   status: false,

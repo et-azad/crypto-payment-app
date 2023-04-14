@@ -15,7 +15,6 @@ export default function Home() {
   const dispatch = useDispatch();
   const { pushToast } = useToast();
   const { status, options } = useSelector(({ setting }: { setting: Setting }) => setting);
-  const { _currency } = options;
 
   useEffect(() => {
     const cleanUp = setTimeout(
@@ -44,7 +43,7 @@ export default function Home() {
         footerOneliner="Completed the Setting? start accepting Payments!"
       >
         <div className="w-full md:w-4/12">
-          {status ? <PayForm currency={_currency} /> : <h1 className="text-center">Setup not completed!</h1>}
+          {status ? <PayForm options={options} /> : <h1 className="text-center">Setup not completed!</h1>}
         </div>
       </Layout >
     </>

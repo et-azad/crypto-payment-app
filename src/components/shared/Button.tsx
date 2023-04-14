@@ -13,6 +13,7 @@ export default function Button({
   isFullWidth = false,
   pulse = false,
   thunderIcon = false,
+  disabled = false,
   onClick,
   children,
 }: {
@@ -21,11 +22,12 @@ export default function Button({
   isFullWidth?: boolean;
   pulse?: boolean;
   thunderIcon?: boolean;
+  disabled?: boolean;
   onClick?: () => void;
   children: ReactNode;
 }) {
   return (
-    <button type={type} className={`${theme} ${isFullWidth && `w-full`}`} onClick={onClick}>
+    <button type={type} className={`${theme} ${isFullWidth && `w-full`}`} onClick={onClick} disabled={disabled}>
       {children}
       {thunderIcon && <ThunderIcon />}
       {pulse && <TopPulse />}

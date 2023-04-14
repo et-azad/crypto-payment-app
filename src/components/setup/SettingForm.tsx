@@ -1,5 +1,6 @@
 import { useCallback, useState, FormEvent, ChangeEvent, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useRouter } from "next/router";
 import useToast from "@/hooks/useToast";
 import { Setting } from "@/components/models/setting";
 import { updateSetting } from "@/store/slices/setting";
@@ -16,6 +17,7 @@ import { NetworkOptions } from "@/components/models/network";
 
 export default function SettingForm() {
 	const dispatch = useDispatch();
+	const router = useRouter();
 	const { pushToast } = useToast();
 	const setting = useSelector(({ setting }: { setting: Setting }) => setting);
 	const {
@@ -217,7 +219,10 @@ export default function SettingForm() {
 				<span className="ml-3 text-md font-medium text-gray-900">{testPayments ? "Disable" : "Enable"} test payments</span>
 			</label>
 			{testPayments && <Networks networks={testNetworks} onToggleNetwork={handleTestNetworkToggle} isTest />}
-			<Button type="submit" theme={ButtonType.Primary}>Save Setting</Button>
+			<div className="flex items-center justify-end gap-4 ">
+				{setting.status && <Button onClick={() => router.push("/setup/pay")}>Pay Now</Button>}
+				<Button type="submit" theme={ButtonType.Primary}>Save Setting</Button>
+			</div>
 		</form>
 	)
 }
