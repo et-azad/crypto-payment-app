@@ -26,9 +26,9 @@ export default function Networks({
               defaultChecked={network.selected && true}
               onChange={onToggleNetwork}
             />
-            <label htmlFor={network.network} className="inline-flex items-center justify-center w-full h-32 p-2 text-gray-500 bg-white border-2 border-gray-200 rounded-lg cursor-pointer peer-checked:border-orange-600 hover:text-gray-600 peer-checked:text-gray-600 hover:bg-gray-50 text-center relative">
+            <label htmlFor={network.network} className="inline-flex items-center justify-center w-full h-28 p-2 text-gray-500 bg-white border-2 border-gray-200 rounded-lg cursor-pointer peer-checked:border-orange-600 hover:text-gray-600 peer-checked:text-gray-600 hover:bg-gray-50 text-center relative">
               <div className="block">
-                <Image src={network.icon} width="40" height="40" alt={network.title} className="mx-auto" />
+                <Image src={network.icon} width="40" height="40" alt={network.title} className="mx-auto mb-1" />
                 <div className="w-full text-md font-semibold">{network.symbol}</div>
                 <div className="w-full text-xs">{network.title}</div>
                 {network.isTest && <Badge className="absolute top-0 left-0">Test Network</Badge>}
