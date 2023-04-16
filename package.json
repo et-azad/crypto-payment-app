@@ -16,13 +16,15 @@
     "cookies-next": "^2.1.1",
     "eslint": "8.36.0",
     "eslint-config-next": "13.2.4",
+    "ethers": "^5.7.2",
     "next": "13.2.4",
     "nextjs-progressbar": "^0.0.16",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-redux": "^8.0.5",
     "react-spinners": "^0.13.8",
-    "typescript": "5.0.2"
+    "typescript": "5.0.2",
+    "wagmi": "^0.12.10"
   },
   "devDependencies": {
     "autoprefixer": "^10.4.14",

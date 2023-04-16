@@ -36,7 +36,7 @@ export default function Home() {
 
   return (
     <>
-      <PageHead title="Settings" />
+      <PageHead title="Start Payment" />
       <Layout
         isSetup
         footerOneliner="Completed the Setting? start accepting Payments!"
