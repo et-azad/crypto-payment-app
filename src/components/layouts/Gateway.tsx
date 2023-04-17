@@ -1,46 +1,33 @@
-import { ReactNode } from "react";
-import { WagmiConfig, createClient, configureChains, mainnet } from 'wagmi';
+import { ReactNode, useMemo } from "react";
+import { WagmiConfig, createClient, configureChains } from 'wagmi';
+import useNetworks from "@/hooks/useNetworks";
 
 import { alchemyProvider } from 'wagmi/providers/alchemy';
 import { publicProvider } from 'wagmi/providers/public';
 
-import { CoinbaseWalletConnector } from 'wagmi/connectors/coinbaseWallet';
-import { InjectedConnector } from 'wagmi/connectors/injected';
-import { MetaMaskConnector } from 'wagmi/connectors/metaMask';
-import { WalletConnectConnector } from 'wagmi/connectors/walletConnect';
-
 import { useSelector } from "react-redux";
 import { Setting } from "@/components/models/setting";
+import useConnectors from "@/hooks/useConnectors";
 
 export default function Gateway({ children }: { children: ReactNode }) {
   const setting = useSelector(({ setting }: { setting: Setting }) => setting);
-  const { _connectors, _provider, _providerApiKey, _networks } = setting.options;
+  const { _connectors, _provider, _providerApiKey, _networks, _testNetworks } = setting.options;
+  const { allowedNetworks } = useNetworks(_networks);
+  const { allowedNetworks: allowedTestNetworks } = useNetworks(_testNetworks, "test");
 
   // Configure chains & providers with the Alchemy provider.
   // Two popular providers are Alchemy (alchemy.com) and Infura (infura.io)
   const { chains, provider, webSocketProvider } = configureChains(
-    [mainnet],
+    [...allowedNetworks, ...allowedTestNetworks],
     [publicProvider()],
   )
+
+  const { allowedConnectors } = useConnectors(_connectors, chains);
 
   // Set up client
   const client = createClient({
     autoConnect: true,
-    connectors: [
-      new MetaMaskConnector({ chains }),
-      // new CoinbaseWalletConnector({
-      //   chains,
-      //   options: {
-      //     appName: 'wagmi',
-      //   },
-      // }),
-      // new WalletConnectConnector({
-      //   chains,
-      //   options: {
-      //     projectId: '...',
-      //   },
-      // }),
-    ],
+    connectors: allowedConnectors,
     provider,
     webSocketProvider,
   })

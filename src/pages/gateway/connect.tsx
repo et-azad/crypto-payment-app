@@ -31,15 +31,15 @@ export default function Home() {
 
   return (
     <>
-      <PageHead title="Connect with a Wallet" />
-      <Layout footerOneliner="Use your favorite crypto network to make Payment or else Cancel Payment">
-        <Gateway>
+      <Gateway>
+        <PageHead title="Connect with a Wallet" />
+        <Layout footerOneliner="Use your favorite crypto network to make Payment or else Cancel Payment">
           <div className="w-full">
             {/* {_token ? <ConnectorOptions /> : <h1 className="text-center">Token Not Defined!</h1>} */}
             <AvailableConnectors availableConnector={_connectors} />
           </div>
-        </Gateway>
-      </Layout>
+        </Layout>
+      </Gateway>
     </>
   );
 }

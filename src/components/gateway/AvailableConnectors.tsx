@@ -24,6 +24,9 @@ export default function AvailableConnectors({ availableConnector }: { availableC
           case "UserRejectedRequestError":
             pushToast("error", "Connection request rejected");
             break;
+          case "ConnectorAlreadyConnectedError":
+            pushToast("warning", "You are already connected");
+            break;
           default:
             pushToast("error", error.name);
             break;
