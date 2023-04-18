@@ -17,10 +17,6 @@ export const SETUP_NAVS: NavLink[] = [
 
 export const GATEWAY_NAVS: NavLink[] = [
     {
-        lable: "Connect",
-        href: "/gateway/connect"
-    },
-    {
         lable: "Supported Networks",
         href: "/gateway/supported-networks"
     },

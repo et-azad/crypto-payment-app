@@ -1,19 +1,18 @@
-import { useCallback, useEffect } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { useConnect, useAccount } from 'wagmi';
 import useToast from "@/hooks/useToast";
-import Image from "next/image";
-import { SyncLoader } from "react-spinners";
 import { ConnectorOptions } from "@/components/models/connector";
-import Button, { ButtonType } from "@/components/shared/Button";
+import ConnectorCard from "@/components/gateway/ConnectorCard";
 
 export default function AvailableConnectors({ availableConnector }: { availableConnector: ConnectorOptions[] }) {
+  const [checkConnection, setCheckConnection] = useState(false);
   const router = useRouter();
   const { pushToast } = useToast();
-  const { connect, connectors, pendingConnector, isLoading, error } = useConnect();
+  const { connect, connectors, error, isLoading, pendingConnector } = useConnect();
   const { isConnected } = useAccount();
 
-  const handleConnect = useCallback((connectorId: any) => {
+  const handleConnect = useCallback((connectorId: string) => {
     const connector = connectors.find(connector => connector.id === connectorId);
     if (connector) connect({ connector });
     else pushToast("error", "Something went wrong please try again later");
@@ -41,39 +40,28 @@ export default function AvailableConnectors({ availableConnector }: { availableC
   useEffect(() => {
     const cleanUp = setTimeout(() => {
       if (isConnected) {
+        setCheckConnection(isConnected);
         router.replace("/gateway/pay")
-        pushToast("success", "Connected Successfully.");
+        pushToast("success", "Wallet connected!");
       }
-    }, 200)
+    }, 100)
     return () => clearTimeout(cleanUp);
   }, [router, isConnected, pushToast])
 
   return (
     <div className="flex flex-wrap justify-center gap-4">
-      {availableConnector.map((connector: ConnectorOptions) => {
-        if (connector.active && connector.selected) return (
-          <div key={connector.connector} className="wrapper antialiased text-gray-900 h-full w-full md:w-72">
-            <div
-              className="bg-white p-4 rounded-lg shadow-lg">
-              <Image src={connector.icon} alt="" width={150} height={150}
-                className="w-full object-cover object-center rounded shadow-md border-dashed border-2 border-orange-500 transition duration-300 hover:scale-105 p-2" />
-              <h1 className="text-3xl font-bold py-2 tracking-tight text-gray-900 mb-0">{connector.title}</h1>
-              <p className="text-md text-gray-600 mb-2">{connector.description}</p>
-              <Button
-                theme={isLoading ? (connector.connector === pendingConnector?.id ? ButtonType.Primary : ButtonType.Secondary) : ButtonType.Primary}
-                onClick={() => handleConnect(connector.connector)}
-                isFullWidth
-                pulse={!isLoading}
-                disabled={isLoading}
-              >
-                {isLoading && connector.connector === pendingConnector?.id ? (
-                  <SyncLoader className="py-2 px-4" color="#ffffff" size={10} />
-                ) : "Connect"}
-              </Button>
-            </div>
-          </div>
-        )
-      })}
+      {!checkConnection ? availableConnector.map((connector: ConnectorOptions) => {
+        if (connector.active && connector.selected)
+          return (
+            <ConnectorCard
+              key={connector.connector}
+              connector={connector}
+              onConnect={handleConnect}
+              isLoading={isLoading}
+              pendingConnector={pendingConnector}
+            />
+          )
+      }) : <h1>Redirecting to payment page...</h1>}
     </div>
   );
 }
