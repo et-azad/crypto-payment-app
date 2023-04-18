@@ -1,5 +1,6 @@
 import { useCallback, useEffect } from "react";
-import { useConnect } from 'wagmi';
+import { useRouter } from "next/router";
+import { useConnect, useAccount } from 'wagmi';
 import useToast from "@/hooks/useToast";
 import Image from "next/image";
 import { SyncLoader } from "react-spinners";
@@ -7,8 +8,10 @@ import { ConnectorOptions } from "@/components/models/connector";
 import Button, { ButtonType } from "@/components/shared/Button";
 
 export default function AvailableConnectors({ availableConnector }: { availableConnector: ConnectorOptions[] }) {
-  const { connect, connectors, pendingConnector, isLoading, error } = useConnect();
+  const router = useRouter();
   const { pushToast } = useToast();
+  const { connect, connectors, pendingConnector, isLoading, error } = useConnect();
+  const { isConnected } = useAccount();
 
   const handleConnect = useCallback((connectorId: any) => {
     const connector = connectors.find(connector => connector.id === connectorId);
@@ -34,6 +37,16 @@ export default function AvailableConnectors({ availableConnector }: { availableC
     }, 200);
     return () => clearTimeout(cleanUp);
   }, [error, pushToast])
+
+  useEffect(() => {
+    const cleanUp = setTimeout(() => {
+      if (isConnected) {
+        router.replace("/gateway/pay")
+        pushToast("success", "Connected Successfully.");
+      }
+    }, 200)
+    return () => clearTimeout(cleanUp);
+  }, [router, isConnected, pushToast])
 
   return (
     <div className="flex flex-wrap justify-center gap-4">

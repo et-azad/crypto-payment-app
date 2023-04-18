@@ -13,7 +13,7 @@ export default function Home() {
   const dispatch = useDispatch();
   const _token = getCookie("_token");
   const setting = useSelector(({ setting }: { setting: Setting }) => setting);
-  const { _connectors, _provider, _providerApiKey, _networks } = setting.options;
+  const { _connectors } = setting.options;
 
   useEffect(() => {
     const cleanUp = setTimeout(
@@ -32,7 +32,7 @@ export default function Home() {
   return (
     <>
       <Gateway>
-        <PageHead title="Connect with a Wallet" />
+        <PageHead title="Connect with your Wallet" />
         <Layout footerOneliner="Use your favorite crypto network to make Payment or else Cancel Payment">
           <div className="w-full">
             {/* {_token ? <ConnectorOptions /> : <h1 className="text-center">Token Not Defined!</h1>} */}
