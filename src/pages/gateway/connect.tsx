@@ -33,7 +33,7 @@ export default function Home() {
     <>
       <Gateway>
         <PageHead title="Connect with your Wallet" />
-        <Layout footerOneliner="Use your favorite crypto network to make Payment or else Cancel Payment">
+        <Layout footerOneliner="Use your favorite crypto network to make Payment">
           <div className="w-full">
             {/* {_token ? <ConnectorOptions /> : <h1 className="text-center">Token Not Defined!</h1>} */}
             <AvailableConnectors availableConnector={_connectors} />

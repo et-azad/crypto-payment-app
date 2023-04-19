@@ -1,6 +1,5 @@
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
-import Image from "next/image";
 import { useRouter } from "next/router";
 import { getCookie } from "cookies-next";
 import { setNav } from "@/store/slices/nav";
@@ -36,7 +35,7 @@ export default function Home() {
     <>
       <Gateway>
         <PageHead title="Settings" />
-        <Layout footerOneliner="Use your favorite crypto network to make Payment or else Cancel Payment">
+        <Layout footerOneliner="Use your favorite crypto network to make Payment">
           <WalletDetails />
         </Layout>
       </Gateway>
