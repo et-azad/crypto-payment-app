@@ -1,4 +1,5 @@
 export interface NetworkOptions {
+  id: number;
   active: boolean | "commingSoon";
   selected: boolean;
   network: string;

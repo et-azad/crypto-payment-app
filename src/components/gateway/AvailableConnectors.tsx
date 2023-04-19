@@ -4,6 +4,7 @@ import { useConnect, useAccount } from 'wagmi';
 import useToast from "@/hooks/useToast";
 import { ConnectorOptions } from "@/components/models/connector";
 import ConnectorCard from "@/components/gateway/ConnectorCard";
+import { HashLoader } from "react-spinners";
 
 export default function AvailableConnectors({ availableConnector }: { availableConnector: ConnectorOptions[] }) {
   const [checkConnection, setCheckConnection] = useState(false);
@@ -61,7 +62,7 @@ export default function AvailableConnectors({ availableConnector }: { availableC
               pendingConnector={pendingConnector}
             />
           )
-      }) : <h1>Redirecting to payment page...</h1>}
+      }) : (<HashLoader className="py-2 px-4" color="#f97316" />)}
     </div>
   );
 }

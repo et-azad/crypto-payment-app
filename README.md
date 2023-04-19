@@ -52,6 +52,7 @@ https://wagmi.sh/examples/connect-wallet
 Networks
 ---
 https://www.npmjs.com/package/@wagmi/chains
+https://wagmi.sh/react/chains
 
 
 Providers

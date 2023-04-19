@@ -2,6 +2,7 @@ import { NetworkOptions } from "@/components/models/network";
 
 export const TEST_NETWORKS: NetworkOptions[] = [
   {
+    id: 5,
     active: true,
     selected: true,
     network: "goerli",
@@ -12,6 +13,7 @@ export const TEST_NETWORKS: NetworkOptions[] = [
     isTest: true,
   },
   {
+    id: 97,
     active: true,
     selected: false,
     network: "bscTestnet",
@@ -22,6 +24,7 @@ export const TEST_NETWORKS: NetworkOptions[] = [
     isTest: true,
   },
   {
+    id: 80001,
     active: true,
     selected: false,
     network: "polygonMumbai",
@@ -32,6 +35,7 @@ export const TEST_NETWORKS: NetworkOptions[] = [
     isTest: true,
   },
   {
+    id: 43113,
     active: true,
     selected: false,
     network: "avalancheFuji",
@@ -42,6 +46,7 @@ export const TEST_NETWORKS: NetworkOptions[] = [
     isTest: true,
   },
   {
+    id: 4002,
     active: true,
     selected: false,
     network: "fantomTestnet",
@@ -52,6 +57,7 @@ export const TEST_NETWORKS: NetworkOptions[] = [
     isTest: true,
   },
   {
+    id: 4690,
     active: true,
     selected: false,
     network: "iotexTestnet",
@@ -62,6 +68,7 @@ export const TEST_NETWORKS: NetworkOptions[] = [
     isTest: true,
   },
   {
+    id: 420,
     active: true,
     selected: false,
     network: "optimismGoerli",
@@ -72,6 +79,7 @@ export const TEST_NETWORKS: NetworkOptions[] = [
     isTest: true,
   },
   {
+    id: 44787,
     active: true,
     selected: false,
     network: "celoAlfajores",
@@ -85,6 +93,7 @@ export const TEST_NETWORKS: NetworkOptions[] = [
 
 export const NETWORKS: NetworkOptions[] = [
   {
+    id: 1,
     active: true,
     selected: true,
     network: "mainnet",
@@ -94,6 +103,7 @@ export const NETWORKS: NetworkOptions[] = [
     icon: "/networks/eth.svg",
   },
   {
+    id: 56,
     active: true,
     selected: false,
     network: "bsc",
@@ -103,6 +113,7 @@ export const NETWORKS: NetworkOptions[] = [
     icon: "/networks/bnb.svg",
   },
   {
+    id: 137,
     active: true,
     selected: false,
     network: "polygon",
@@ -112,6 +123,7 @@ export const NETWORKS: NetworkOptions[] = [
     icon: "/networks/matic.svg",
   },
   {
+    id: 43114,
     active: true,
     selected: false,
     network: "avalanche",
@@ -121,6 +133,7 @@ export const NETWORKS: NetworkOptions[] = [
     icon: "/networks/avax.svg",
   },
   {
+    id: 250,
     active: true,
     selected: false,
     network: "fantom",
@@ -130,6 +143,7 @@ export const NETWORKS: NetworkOptions[] = [
     icon: "/networks/ftm.svg",
   },
   {
+    id: 4689,
     active: true,
     selected: false,
     network: "iotex",
@@ -139,6 +153,7 @@ export const NETWORKS: NetworkOptions[] = [
     icon: "/networks/iotex.svg",
   },
   {
+    id: 10,
     active: true,
     selected: false,
     network: "optimism",
@@ -148,6 +163,7 @@ export const NETWORKS: NetworkOptions[] = [
     icon: "/networks/optimism.svg",
   },
   {
+    id: 42220,
     active: true,
     selected: false,
     network: "celo",
