@@ -67,7 +67,7 @@ export default function WalletDetails() {
               connectedNetwork={connectedNetwork}
             />
             {!chain?.unsupported ?
-              <PaymentInfo /> :
+              <PaymentInfo connectedNetwork={connectedNetwork} /> :
               <SwitchNetwork
                 suggestedNetwork={chains[0]}
                 switchNetwork={switchNetwork}

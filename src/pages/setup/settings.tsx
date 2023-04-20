@@ -31,7 +31,7 @@ export default function Home() {
         isSetup
         footerOneliner="Completed the Setting? start accepting Payments!"
       >
-        <div className="w-full md:w-6/12">
+        <div className="w-full md:w-6/12 shadow-2xl rounded-xl">
           <SettingForm />
         </div>
       </Layout>

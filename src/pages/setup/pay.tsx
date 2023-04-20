@@ -41,7 +41,7 @@ export default function Home() {
         isSetup
         footerOneliner="Completed the Setting? start accepting Payments!"
       >
-        <div className="w-full md:w-4/12">
+        <div className="w-full md:w-4/12 shadow-2xl rounded-xl">
           {status ? <PayForm options={options} /> : <h1 className="text-center">Setup not completed!</h1>}
         </div>
       </Layout >

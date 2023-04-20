@@ -24,7 +24,7 @@ export default function ConnectorCard({
           alt={connector.title}
           width={150}
           height={150}
-          className="w-full object-cover object-center rounded shadow-md border-dashed border-2 border-orange-500 transition duration-300 hover:scale-105 p-2" />
+          className="w-full object-cover object-center rounded-xl shadow-md border-dashed border-2 border-orange-500 transition duration-300 hover:scale-105 p-2" />
         <h1 className="text-3xl font-bold py-2 tracking-tight text-gray-900 mb-0">{connector.title}</h1>
         <p className="text-md text-gray-600 mb-2">{connector.description}</p>
         <Button

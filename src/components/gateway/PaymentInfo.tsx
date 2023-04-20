@@ -1,42 +1,43 @@
+import { useEffect } from "react";
+import { useSelector } from "react-redux";
+import { Chain } from "wagmi";
+import { PulseLoader } from "react-spinners";
+import useConvertCurrency from "@/hooks/useConvertCurrency";
+import { Setting } from "@/components/models/setting";
+import BottomAnimation from "@/components/shared/BottomAnimation";
+import Button, { ButtonType } from "@/components/shared/Button";
 
-export default function PaymentInfo() {
+export default function PaymentInfo({
+  connectedNetwork
+}: {
+  connectedNetwork: (Chain & { unsupported?: boolean | undefined }) | undefined,
+}) {
+  const setting = useSelector(({ setting }: { setting: Setting }) => setting);
+  const { _amount, _currency } = setting.options;
+  const { convertedAmount, setConvertedAmount, setTo } = useConvertCurrency(_currency.currency, _amount);
+
+  useEffect(() => {
+    setTo(connectedNetwork?.nativeCurrency.symbol);
+    setConvertedAmount(0);
+  }, [setTo, setConvertedAmount, connectedNetwork])
+
   return (
     <>
       <div className="pt-3 mx-4 text-center">
+        <div className="mb-4 py-6 font-bold text-gray-500 rounded-xl shadow-md border-dashed border-2 border-orange-500">
+          <h2 className="text-sm text-gray-700">Payable Amount</h2>
+          <h1 className="text-md font-bold">
+            <span className="text-2xl text-orange-400 mr-1">
+              {convertedAmount === 0 ? (<PulseLoader className="px-1" color="#f97316" size={13} />) : convertedAmount} {connectedNetwork?.nativeCurrency.symbol}
+            </span>
+            ({_amount} {_currency.currency})
+          </h1>
+        </div>
         <div className="flex flex-wrap justify-center">
-          <div className="w-full">
-            <div className="rounded-lg shadow-md mb-4 py-6 font-bold text-gray-500">
-              <h2 className="text-sm text-gray-700">Payable Amount</h2>
-              <h1 className="text-xl font-bold"><span className="text-3xl text-orange-400">0.0063 ETH</span> (11.5 USD)</h1>
-            </div>
-            <button
-              className="transform rounded-md px-5 py-3 font-medium text-white transition-colors bg-gradient-to-r from-orange-300 to-orange-500 hover:from-pink-500 hover:to-yellow-500 transition duration-300 hover:scale-105">Complete Payment <span
-                className="animate-ping absolute right-0 top-0 w-3 h-3  rounded-full bg-gradient-to-r from-orange-400 to-orange-700 "></span></button>
-          </div>
+          <Button theme={ButtonType.Primary} pulse>Complete Payment</Button>
         </div>
       </div>
-      <div className="relative h-6 overflow-hidden translate-y-6 rounded-b-xl">
-        <div className="absolute flex -space-x-12 rounded-b-2xl">
-          <div
-            className="w-36 h-8 transition-colors duration-200 delay-75 transform skew-x-[35deg] bg-orange-500/90 group-hover:bg-orange-600/90 z-10">
-          </div>
-          <div
-            className="w-28 h-8 transition-colors duration-200 delay-100 transform skew-x-[35deg] bg-orange-400/90 group-hover:bg-orange-500/90 z-20">
-          </div>
-          <div
-            className="w-28 h-8 transition-colors duration-200 delay-150 transform skew-x-[35deg] bg-orange-300/90 group-hover:bg-orange-400/90 z-30">
-          </div>
-          <div
-            className="w-28 h-8 transition-colors duration-200 delay-200 transform skew-x-[35deg] bg-orange-200/90 group-hover:bg-orange-300/90 z-40">
-          </div>
-          <div
-            className="w-28 h-8 transition-colors duration-200 delay-300 transform skew-x-[35deg] bg-orange-100/90 group-hover:bg-orange-200/90 z-50">
-          </div>
-          <div
-            className="w-28 h-8 transition-colors duration-200 delay-300 transform skew-x-[35deg] bg-orange-50/90 group-hover:bg-orange-100/90 z-50">
-          </div>
-        </div>
-      </div>
+      <BottomAnimation />
     </>
   )
 }
