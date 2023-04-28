@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { useConnect, useAccount } from 'wagmi';
+import useErrors from "@/hooks/useErrors";
 import useToast from "@/hooks/useToast";
 import { ConnectorOptions } from "@/components/models/connector";
 import ConnectorCard from "@/components/gateway/ConnectorCard";
@@ -19,24 +20,7 @@ export default function AvailableConnectors({ availableConnector }: { availableC
     else pushToast("error", "Something went wrong please try again later");
   }, [connect, pushToast, connectors])
 
-  useEffect(() => {
-    const cleanUp = setTimeout(() => {
-      console.log(error);
-      if (error)
-        switch (error.name) {
-          case "UserRejectedRequestError":
-            pushToast("error", "Connection request rejected");
-            break;
-          case "ConnectorAlreadyConnectedError":
-            pushToast("warning", "You are already connected");
-            break;
-          default:
-            pushToast("error", error.name);
-            break;
-        }
-    }, 200);
-    return () => clearTimeout(cleanUp);
-  }, [error, pushToast])
+  useErrors(error);
 
   useEffect(() => {
     const cleanUp = setTimeout(() => {

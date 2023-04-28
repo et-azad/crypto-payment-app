@@ -8,6 +8,7 @@ import {
 import { useSwitchNetwork } from 'wagmi';
 import { Chain } from "wagmi";
 import { HashLoader, } from "react-spinners";
+import useErrors from "@/hooks/useErrors";
 import useToast from "@/hooks/useToast";
 import WalletInfo from "@/components/gateway/WalletInfo";
 import PaymentInfo from "@/components/gateway/PaymentInfo";
@@ -25,24 +26,7 @@ export default function WalletDetails() {
   const { error, isLoading, pendingChainId, switchNetwork } = useSwitchNetwork();
   const { disconnect } = useDisconnect();
 
-  useEffect(() => {
-    const cleanUp = setTimeout(() => {
-      console.log(error);
-      if (error)
-        switch (error.name) {
-          case "UserRejectedRequestError":
-            pushToast("error", "Connection request rejected");
-            break;
-          case "ConnectorAlreadyConnectedError":
-            pushToast("warning", "You are already connected");
-            break;
-          default:
-            pushToast("error", error.name);
-            break;
-        }
-    }, 200);
-    return () => clearTimeout(cleanUp);
-  }, [error, pushToast])
+  useErrors(error);
 
   useEffect(() => {
     setCheckConnection(isConnected);
