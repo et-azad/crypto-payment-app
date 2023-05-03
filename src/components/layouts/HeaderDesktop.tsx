@@ -14,7 +14,7 @@ export default function HeaderDesktop() {
   return (
     <header className="bg-white shadow-lg h-18 hidden md:flex fixed top-0 w-full z-10 py-2">
       <Link
-        href="/"
+        href={navOption.index}
         className="flex-shrink-0 flex items-center justify-center px-4 lg:px-6 xl:px-8"
       >
         <Image src={headerLogo} className="h-16 max-w-min" alt="Logo" />
@@ -27,8 +27,8 @@ export default function HeaderDesktop() {
                 <Link
                   href={navs.href}
                   className={`p-3 rounded-md ${path === navs.href
-                      ? `shadow-xl`
-                      : `hover:shadow-xl`
+                    ? `shadow-xl`
+                    : `hover:shadow-xl`
                     }`}
                 >
                   <span>{navs.lable}</span>
@@ -38,9 +38,15 @@ export default function HeaderDesktop() {
         </ul>
       </nav>
       <div className="flex items-center px-4 lg:px-6 xl:px-8">
-        <Button theme={ButtonType.Primary} isFullWidth pulse thunderIcon>
-          Connect Wallet
-        </Button>
+        {navOption.type === "gateway" ? (
+          <Button theme={ButtonType.Primary} isFullWidth pulse thunderIcon>
+            Connect Wallet
+          </Button>
+        ) : (
+          <Button theme={ButtonType.Primary} isFullWidth>
+            Go to Settings
+          </Button>
+        )}
       </div>
     </header>
   );

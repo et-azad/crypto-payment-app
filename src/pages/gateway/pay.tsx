@@ -22,6 +22,8 @@ export default function Home() {
       () =>
         dispatch(
           setNav({
+            type: "gateway",
+            index: "/gateway/pay",
             show: true,
             links: GATEWAY_NAVS,
           })

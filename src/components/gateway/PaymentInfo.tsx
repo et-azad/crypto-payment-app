@@ -1,11 +1,13 @@
-import { useEffect } from "react";
+import { useCallback, useEffect } from "react";
 import { useSelector } from "react-redux";
-import { Chain } from "wagmi";
-import { PulseLoader } from "react-spinners";
+import { Chain, usePrepareSendTransaction } from "wagmi";
+import Web3 from "web3";
+import { PulseLoader, SyncLoader } from "react-spinners";
 import useConvertCurrency from "@/hooks/useConvertCurrency";
 import { Setting } from "@/components/models/setting";
 import BottomAnimation from "@/components/shared/BottomAnimation";
-import Button, { ButtonType } from "@/components/shared/Button";
+import useErrors from "@/hooks/useErrors";
+import PayNow from "./PayNow";
 
 export default function PaymentInfo({
   connectedNetwork
@@ -13,8 +15,19 @@ export default function PaymentInfo({
   connectedNetwork: (Chain & { unsupported?: boolean | undefined }) | undefined,
 }) {
   const setting = useSelector(({ setting }: { setting: Setting }) => setting);
-  const { _amount, _currency } = setting.options;
+  const { _walletAddress, _amount, _currency } = setting.options;
   const { convertedAmount, setConvertedAmount, setTo } = useConvertCurrency(_currency.currency, _amount);
+
+  const { data: prepareData, config, error: errorWhenPrepare } = usePrepareSendTransaction({
+    request: {
+      to: _walletAddress,
+      value: Web3.utils.toWei(`${convertedAmount}`),
+      data: Web3.utils.utf8ToHex("test"),
+      chainId: connectedNetwork?.id
+    },
+  })
+  
+  useErrors(errorWhenPrepare);
 
   useEffect(() => {
     setTo(connectedNetwork?.nativeCurrency.symbol);
@@ -33,9 +46,7 @@ export default function PaymentInfo({
             ({_amount} {_currency.currency})
           </h1>
         </div>
-        <div className="flex flex-wrap justify-center">
-          <Button theme={ButtonType.Primary} pulse>Complete Payment</Button>
-        </div>
+        {convertedAmount !== 0 && prepareData && <PayNow config={config} />}
       </div>
       <BottomAnimation />
     </>

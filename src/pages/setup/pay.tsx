@@ -25,6 +25,8 @@ export default function Home() {
         }
         dispatch(
           setNav({
+            type: "main",
+            index: "/",
             show: true,
             links: SETUP_NAVS,
           })

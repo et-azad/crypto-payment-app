@@ -5,7 +5,7 @@ import {
   useNetwork,
   useDisconnect,
 } from 'wagmi';
-import { useSwitchNetwork } from 'wagmi';
+import { useSwitchNetwork, useBalance } from 'wagmi';
 import { Chain } from "wagmi";
 import { HashLoader, } from "react-spinners";
 import useErrors from "@/hooks/useErrors";
@@ -13,6 +13,7 @@ import useToast from "@/hooks/useToast";
 import WalletInfo from "@/components/gateway/WalletInfo";
 import PaymentInfo from "@/components/gateway/PaymentInfo";
 import SwitchNetwork from "@/components/gateway/SwitchNetwork";
+import AlertCard from "@/components/shared/AlertCard";
 
 export default function WalletDetails() {
   const [checkConnection, setCheckConnection] = useState<boolean>(false);
@@ -24,7 +25,9 @@ export default function WalletDetails() {
   const { address, isConnected } = useAccount();
   const { chain, chains } = useNetwork();
   const { error, isLoading, pendingChainId, switchNetwork } = useSwitchNetwork();
-  const { disconnect } = useDisconnect();
+  const { data: balanceData, isFetched } = useBalance({
+    address: address
+  });
 
   useErrors(error);
 
@@ -51,7 +54,10 @@ export default function WalletDetails() {
               connectedNetwork={connectedNetwork}
             />
             {!chain?.unsupported ?
-              <PaymentInfo connectedNetwork={connectedNetwork} /> :
+              (isFetched && (+(balanceData?.formatted || 0) > 0) ?
+                <PaymentInfo connectedNetwork={connectedNetwork} /> :
+                <AlertCard>No funds! Unable to complete transaction</AlertCard>)
+              :
               <SwitchNetwork
                 suggestedNetwork={chains[0]}
                 switchNetwork={switchNetwork}

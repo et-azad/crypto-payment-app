@@ -1,6 +1,8 @@
 import { NavLink } from "@/components/models/link";
 
 export interface NavState {
-    show: boolean,
-    links: NavLink[]
+  type: "main" | "gateway";
+  index: "/" | "/gateway/pay";
+  show: boolean;
+  links: NavLink[];
 }

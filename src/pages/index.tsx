@@ -16,6 +16,8 @@ export default function Home() {
       () =>
         dispatch(
           setNav({
+            type: "main",
+            index: "/",
             show: true,
             links: SETUP_NAVS,
           })
@@ -36,7 +38,7 @@ export default function Home() {
         <div className="mx-auto max-w-[43rem]">
           <Intro
             topHeading="Introducing Crypto Currency Payment"
-            mainHeading="Distribute your brand from&nbsp;design to code"
+            mainHeading="Let's start accepting payment with Crypto Currency"
           >
             Specify helps you unify your brand identity by collecting, storing
             and distributing design tokens and assets — automatically.
