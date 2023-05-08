@@ -220,7 +220,6 @@ export default function SettingForm() {
 			</label>
 			{testPayments && <Networks networks={testNetworks} onToggleNetwork={handleTestNetworkToggle} isTest />}
 			<div className="flex items-center justify-end gap-4 ">
-				{setting.status && <Button onClick={() => router.push("/setup/pay")}>Pay Now</Button>}
 				<Button type="submit" theme={ButtonType.Primary}>Save Setting</Button>
 			</div>
 		</form>

@@ -8,6 +8,10 @@ export const SETUP_NAVS: NavLink[] = [
     {
         lable: "Pay Now",
         href: "/setup/pay"
+    },
+    {
+        lable: "Settings",
+        href: "/setup/settings"
     }
 ]
 

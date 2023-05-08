@@ -40,8 +40,7 @@ export default function Home() {
             topHeading="Introducing Crypto Currency Payment"
             mainHeading="Let's start accepting payment with Crypto Currency"
           >
-            Specify helps you unify your brand identity by collecting, storing
-            and distributing design tokens and assets — automatically.
+            Cryptocurrency is gaining popularity as a fast and efficient payment method for businesses. Accepting cryptocurrency can help businesses save money on transaction fees and receive payments faster.
           </Intro>
           <div className="mt-6 flex items-center justify-center gap-4">
             <Button

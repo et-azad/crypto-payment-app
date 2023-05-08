@@ -4,8 +4,10 @@ import Image from "next/image";
 import Link from "next/link";
 import Button, { ButtonType } from "@/components/shared/Button";
 import headerLogo from "@/public/header-logo.png";
+import { useRouter } from "next/router";
 
 export default function HeaderMobile() {
+  const router = useRouter();
   const navOption = useSelector(({ nav }: { nav: NavState }) => nav);
 
   return (
@@ -19,12 +21,13 @@ export default function HeaderMobile() {
             <Image src={headerLogo} className="h-16 max-w-min" alt="Logo" />
           </Link>
           <div className="ml-auto flex-shrink-0">
-            {navOption.type === "gateway" ? (
+            {navOption.type === "gateway" && router.pathname != "/gateway/connect" && (
               <Button theme={ButtonType.Primary} isFullWidth pulse thunderIcon>
                 Connect Wallet
               </Button>
-            ) : (
-              <Button theme={ButtonType.Primary} isFullWidth>
+            )}
+            {navOption.type === "main" && router.pathname != "/setup/settings" && (
+              <Button theme={ButtonType.Primary} isFullWidth onClick={() => router.push("/setup/settings")}>
                 Go to Settings
               </Button>
             )}

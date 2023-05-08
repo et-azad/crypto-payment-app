@@ -8,6 +8,7 @@ import Button, { ButtonType } from "@/components/shared/Button";
 import headerLogo from "@/public/header-logo.png";
 
 export default function HeaderDesktop() {
+  const router = useRouter();
   const navOption = useSelector(({ nav }: { nav: NavState }) => nav);
   const path = useRouter().pathname;
 
@@ -27,8 +28,8 @@ export default function HeaderDesktop() {
                 <Link
                   href={navs.href}
                   className={`p-3 rounded-md ${path === navs.href
-                    ? `shadow-xl`
-                    : `hover:shadow-xl`
+                    ? `shadow-md border-dashed border-2 border-orange-500`
+                    : `hover:shadow-xl hover:border-dashed hover:border-2 hover:border-orange-500`
                     }`}
                 >
                   <span>{navs.lable}</span>
@@ -38,12 +39,13 @@ export default function HeaderDesktop() {
         </ul>
       </nav>
       <div className="flex items-center px-4 lg:px-6 xl:px-8">
-        {navOption.type === "gateway" ? (
+        {navOption.type === "gateway" && router.pathname != "/gateway/connect" && (
           <Button theme={ButtonType.Primary} isFullWidth pulse thunderIcon>
             Connect Wallet
           </Button>
-        ) : (
-          <Button theme={ButtonType.Primary} isFullWidth>
+        )}
+        {navOption.type === "main" && router.pathname != "/setup/settings" && (
+          <Button theme={ButtonType.Primary} isFullWidth onClick={() => router.push("/setup/settings")}>
             Go to Settings
           </Button>
         )}
