@@ -12,7 +12,7 @@ import PayNow from "./PayNow";
 export default function PaymentInfo({
   connectedNetwork
 }: {
-  connectedNetwork: (Chain & { unsupported?: boolean | undefined }) | undefined,
+  connectedNetwork: (Chain & { unsupported?: boolean | undefined }) | undefined;
 }) {
   const setting = useSelector(({ setting }: { setting: Setting }) => setting);
   const { _walletAddress, _amount, _currency } = setting.options;
@@ -26,7 +26,7 @@ export default function PaymentInfo({
       chainId: connectedNetwork?.id
     },
   })
-  
+
   useErrors(errorWhenPrepare);
 
   useEffect(() => {
@@ -46,7 +46,7 @@ export default function PaymentInfo({
             ({_amount} {_currency.currency})
           </h1>
         </div>
-        {convertedAmount !== 0 && prepareData && <PayNow config={config} />}
+        {convertedAmount !== 0 && prepareData && <PayNow config={config} connectedNetwork={connectedNetwork} />}
       </div>
       <BottomAnimation />
     </>

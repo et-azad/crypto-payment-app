@@ -11,7 +11,7 @@ export default function useErrors(error: any) {
         if (error.name) {
           switch (error.name) {
             case "UserRejectedRequestError":
-              pushToast("error", "Connection request rejected");
+              pushToast("error", "Request rejected");
               break;
             case "ConnectorAlreadyConnectedError":
               pushToast("warning", "You have already connected");
