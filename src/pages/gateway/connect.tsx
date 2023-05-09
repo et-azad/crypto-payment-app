@@ -1,47 +1,24 @@
-import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { getCookie } from "cookies-next";
+import { useSelector } from "react-redux";
 import { Setting } from "@/components/models/setting";
-import { setNav } from "@/store/slices/nav";
+import Config from "@/components/layouts/gateway/Config";
 import PageHead from "@/components/layouts/PageHead";
-import Layout from "@/components/layouts/Layout";
-import Gateway from "@/components/layouts/Gateway";
+import Layout from "@/components/layouts/gateway/Layout";
 import AvailableConnectors from "@/components/gateway/AvailableConnectors";
-import { GATEWAY_NAVS } from "@/components/constants/links";
 
 export default function Home() {
-  const dispatch = useDispatch();
-  const _token = getCookie("_token");
   const setting = useSelector(({ setting }: { setting: Setting }) => setting);
   const { _connectors } = setting.options;
 
-  useEffect(() => {
-    const cleanUp = setTimeout(
-      () =>
-        dispatch(
-          setNav({
-            type: "gateway",
-            index: "/gateway/pay",
-            show: true,
-            links: GATEWAY_NAVS,
-          })
-        ),
-      500
-    );
-    return () => clearTimeout(cleanUp);
-  }, [dispatch]);
-
   return (
     <>
-      <Gateway>
+      <Config>
         <PageHead title="Connect with your Wallet" />
         <Layout footerOneliner="Use your favorite crypto network to make Payment">
           <div className="w-full">
-            {/* {_token ? <ConnectorOptions /> : <h1 className="text-center">Token Not Defined!</h1>} */}
             <AvailableConnectors availableConnector={_connectors} />
           </div>
         </Layout>
-      </Gateway>
+      </Config>
     </>
   );
 }

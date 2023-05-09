@@ -1,4 +1,4 @@
-import { NavLink } from "../models/link";
+import { NavLink } from "@/components/models/link";
 
 export const SETUP_NAVS: NavLink[] = [
     {

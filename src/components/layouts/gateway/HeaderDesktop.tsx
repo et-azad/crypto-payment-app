@@ -3,7 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import Button, { ButtonType } from "@/components/shared/Button";
 import headerLogo from "@/public/header-logo.png";
-import { SETUP_NAVS } from "@/components/constants/links";
+import { GATEWAY_NAVS } from "@/components/constants/links";
 
 export default function HeaderDesktop() {
   const router = useRouter();
@@ -19,7 +19,7 @@ export default function HeaderDesktop() {
       </Link>
       <nav className="header-links contents font-semibold text-base lg:text-lg">
         <ul className="flex items-center ml-4 xl:ml-8 mr-auto">
-          {SETUP_NAVS.map((navs, idx: number) => (
+          {GATEWAY_NAVS.map((navs, idx: number) => (
             <li key={idx} className="p-3">
               <Link
                 href={navs.href}
@@ -35,11 +35,9 @@ export default function HeaderDesktop() {
         </ul>
       </nav>
       <div className="flex items-center px-4 lg:px-6 xl:px-8">
-        {path != "/setup/settings" && (
-          <Button theme={ButtonType.Primary} isFullWidth onClick={() => router.push("/setup/settings")}>
-            Go to Settings
-          </Button>
-        )}
+        <Button theme={ButtonType.Primary} isFullWidth pulse thunderIcon>
+          Wallet Details
+        </Button>
       </div>
     </header>
   );
