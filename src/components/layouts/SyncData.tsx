@@ -8,11 +8,15 @@ export default function SyncData() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    const setting: SettingOptions = JSON.parse(localStorage.getItem("_settings") || "{}");
-    if (Object.keys(setting).length !== 0) dispatch(updateSetting({
-      status: true,
-      options: setting
-    }))
+    const cleanUp = setTimeout(() => {
+      const setting: SettingOptions = JSON.parse(localStorage.getItem("_settings") || "{}");
+      if (Object.keys(setting).length !== 0) dispatch(updateSetting({
+        status: true,
+        options: setting
+      }))
+    }, 500)
+
+    return () => clearTimeout(cleanUp);
   })
   return <></>
 }

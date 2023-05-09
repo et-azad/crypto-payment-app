@@ -33,6 +33,7 @@ export default function PayForm({ options }: { options: SettingOptions }) {
     // Generating token
     const _token = Math.random().toString(36).substring(2, 15); // Will use JWT with Node
     setCookie("_token", _token, { maxAge: options._sessionTimout });
+    localStorage.removeItem("timeLeft");
     router.push(`/gateway/connect`);
   }, [pushToast, dispatch, router, options, amount])
 
