@@ -16,18 +16,25 @@ export default function Footer({
 
   useEffect(() => {
     const cleanUp = setTimeout(() => {
+      let checkExpired = false;
       let sessionTimout = localStorage.getItem("timeLeft") || _sessionTimout;
       const timer = setInterval(() => {
         sessionTimout = +sessionTimout - 1;
         localStorage.setItem(`timeLeft`, `${sessionTimout}`);
         const minutes = Math.floor(sessionTimout / 60);
         const seconds = sessionTimout % 60;
-        const timeString = `${minutes < 10 ? "0" : ""}${minutes}:${seconds < 10 ? "0" : ""}${seconds}`;
+        let timeString = "";
         if (minutes === 0 && seconds === 0) {
-          localStorage.removeItem("timeLeft");
-          pushToast("error", "Session has been expired");
-          router.replace("/setup/pay");
-          clearInterval(timer);
+          timeString = "Expired";
+          checkExpired = true;
+        } else if (!checkExpired) timeString = `${minutes < 10 ? "0" : ""}${minutes}:${seconds < 10 ? "0" : ""}${seconds}`;
+        if (checkExpired) {
+          if (!localStorage.getItem("_transaction")) {
+            localStorage.removeItem("timeLeft");
+            pushToast("error", "Session has been expired");
+            router.replace("/setup/pay");
+            clearInterval(timer);
+          }
         }
         setTimeLeft(timeString);
       }, 1000)

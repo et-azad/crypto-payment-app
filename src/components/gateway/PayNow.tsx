@@ -26,7 +26,9 @@ export default function PayNow({
   useEffect(() => {
     if (isSendTransaction) pushToast("warning", "Payment request send, please check your wallet")
     if (isSuccess) setTimeout(() => router.replace("/"), 1000)
-  }, [router, pushToast, isSendTransaction, isSuccess])
+    if (isSendTransaction || isLoading || isSuccess) localStorage.setItem("_transaction", "started");
+    else localStorage.removeItem("_transaction");
+  }, [router, pushToast, isSendTransaction, isSuccess, isLoading])
 
   return (
     <>

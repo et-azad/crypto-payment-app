@@ -3,7 +3,6 @@ import { useRouter } from "next/router";
 import {
   useAccount,
   useNetwork,
-  useDisconnect,
 } from 'wagmi';
 import { useSwitchNetwork, useBalance } from 'wagmi';
 import { Chain } from "wagmi";
