@@ -6,13 +6,13 @@ import { Chain, useDisconnect } from "wagmi";
 import { NetworkOptions } from "@/components/models/network";
 import Button, { ButtonType } from "@/components/shared/Button";
 import headerLogo from "@/public/header-logo.png";
-import { GATEWAY_NAVS } from "@/components/constants/links";
 
 export default function HeaderDesktop({
   isConnect,
   walletAddress,
   connectedNetwork,
   networkDetails,
+  onCancel,
 }: {
   isConnect: boolean;
   walletAddress: `0x${string}` | undefined;
@@ -20,6 +20,7 @@ export default function HeaderDesktop({
     unsupported?: boolean | undefined;
   }) | undefined;
   networkDetails: NetworkOptions | undefined;
+  onCancel: () => void;
 }) {
   const router = useRouter();
   const path = router.pathname;
@@ -35,21 +36,9 @@ export default function HeaderDesktop({
         <Image src={headerLogo} className="h-16 max-w-min" alt="Logo" />
       </Link>
       <nav className="header-links contents font-semibold text-base lg:text-lg">
-        <ul className="flex items-center ml-4 xl:ml-8 mr-auto">
-          {GATEWAY_NAVS.map((navs, idx: number) => (
-            <li key={idx} className="p-3">
-              <Link
-                href={navs.href}
-                className={`p-3 rounded-md ${path === navs.href
-                  ? `shadow-md border-dashed border-2 border-orange-500`
-                  : `hover:shadow-xl hover:border-dashed hover:border-2 hover:border-orange-500`
-                  }`}
-              >
-                <span>{navs.lable}</span>
-              </Link>
-            </li>
-          ))}
-        </ul>
+        <div className="flex items-center ml-4 xl:ml-8 mr-auto">
+          <Button onClick={onCancel}>Cancel Payment</Button>
+        </div>
       </nav>
       {path != "/gateway/connect" && isConnect && (
         <>
@@ -72,8 +61,7 @@ export default function HeaderDesktop({
                   <Link href={`${connectedNetwork?.blockExplorers?.default.url}/address/${walletAddress}`} className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem" target="_blank">View on {connectedNetwork?.blockExplorers?.default.name}</Link>
 
                 )}
-                <Link href="#" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">Supported Networks</Link>
-                <Link href="#" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">Cancel Payment</Link>
+                <div className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer" role="menuitem" onClick={onCancel}>Cancel Payment</div>
                 <div className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer" role="menuitem" onClick={() => disconnect()}>Diconnect</div>
               </div>
             </div>

@@ -22,7 +22,7 @@ export default function PaymentInfo({
     request: {
       to: _walletAddress,
       value: Web3.utils.toWei(`${convertedAmount}`),
-      data: Web3.utils.utf8ToHex("test"),
+      data: Web3.utils.utf8ToHex(`{amount: ${_amount} ${_currency.currency}}`),
       chainId: connectedNetwork?.id
     },
   })

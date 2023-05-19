@@ -24,17 +24,18 @@ export default function Footer({
         const minutes = Math.floor(sessionTimout / 60);
         const seconds = sessionTimout % 60;
         let timeString = "";
-        if (minutes === 0 && seconds === 0) {
-          timeString = "Expired";
-          checkExpired = true;
-        } else if (!checkExpired) timeString = `${minutes < 10 ? "0" : ""}${minutes}:${seconds < 10 ? "0" : ""}${seconds}`;
+        if (minutes === 0 && seconds === 0) checkExpired = true;
+
+        if (!checkExpired) timeString = `${minutes < 10 ? "0" : ""}${minutes}:${seconds < 10 ? "0" : ""}${seconds}`;
+        else timeString = "Expired";
+
         if (checkExpired) {
           if (!localStorage.getItem("_transaction")) {
             localStorage.removeItem("timeLeft");
             pushToast("error", "Session has been expired");
             router.replace("/setup/pay");
-            clearInterval(timer);
           }
+          clearInterval(timer);
         }
         setTimeLeft(timeString);
       }, 1000)

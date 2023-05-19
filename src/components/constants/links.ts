@@ -14,14 +14,3 @@ export const SETUP_NAVS: NavLink[] = [
         href: "/setup/settings"
     }
 ]
-
-export const GATEWAY_NAVS: NavLink[] = [
-    {
-        lable: "Supported Networks",
-        href: "/gateway/supported-networks"
-    },
-    {
-        lable: "Cancel Payment",
-        href: "/gateway/cancel"
-    }
-]

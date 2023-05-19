@@ -25,6 +25,11 @@ export default function Home() {
     return () => clearTimeout(cleanUp);
   }, [pushToast, status, router]);
 
+  useEffect(() => {
+    const cleanUp = setTimeout(() => localStorage.removeItem("timeLeft"), 500);
+    return () => clearTimeout(cleanUp);
+  })
+
   return (
     <>
       <PageHead title="Start Payment" />

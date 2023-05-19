@@ -12,6 +12,7 @@ export default function HeaderMobile({
   walletAddress,
   connectedNetwork,
   networkDetails,
+  onCancel,
 }: {
   isConnect: boolean;
   walletAddress: `0x${string}` | undefined;
@@ -19,6 +20,7 @@ export default function HeaderMobile({
     unsupported?: boolean | undefined;
   }) | undefined;
   networkDetails: NetworkOptions | undefined;
+  onCancel: () => void;
 }) {
   const router = useRouter();
   const path = router.pathname;
@@ -60,8 +62,7 @@ export default function HeaderMobile({
               <Link href={`${connectedNetwork?.blockExplorers?.default.url}/address/${walletAddress}`} className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem" target="_blank">View on {connectedNetwork?.blockExplorers?.default.name}</Link>
 
             )}
-            <Link href="#" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">Supported Networks</Link>
-            <Link href="#" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">Cancel Payment</Link>
+            <div className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer" role="menuitem" onClick={onCancel}>Cancel Payment</div>
             <div className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer" role="menuitem" onClick={() => disconnect()}>Diconnect</div>
           </div>
         </div>

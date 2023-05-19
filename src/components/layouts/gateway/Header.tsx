@@ -1,39 +1,37 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
+import { useRouter } from "next/router";
 import {
   useAccount,
   useNetwork,
 } from 'wagmi';
-import { Chain } from "wagmi";
+import useToast from "@/hooks/useToast";
 import { NetworkOptions } from "@/components/models/network";
 import { NETWORKS, TEST_NETWORKS } from "@/components/constants/network";
 import HeaderDesktop from "@/components/layouts/gateway/HeaderDesktop";
 import HeaderMobile from "@/components/layouts/gateway/HeaderMobile";
 
 export default function Header() {
-  const [checkConnection, setCheckConnection] = useState<boolean>(false);
-  const [walletAddress, setWalletAddress] = useState<`0x${string}` | undefined>(undefined);
-  const [connectedNetwork, setConnectedNetwork] = useState<(Chain & { unsupported?: boolean | undefined; }) | undefined>(undefined);
   const [networkDetails, setNetworkDetails] = useState<NetworkOptions>();
+  const [checkConnection, setCheckConnection] = useState<boolean>(false);
+  const router = useRouter();
+  const { pushToast } = useToast();
 
   const { address, isConnected } = useAccount();
   const { chain } = useNetwork();
 
+  const handleCancel = useCallback(() => {
+    pushToast("warning", "Payment has been cancelled!");
+    router.replace("/setup/pay");
+  }, [pushToast, router])
 
   useEffect(() => {
-    const cleanUp = setTimeout(() => {
-      setCheckConnection(isConnected);
-      setWalletAddress(address);
-      setConnectedNetwork(chain);
-      let findNetwork = NETWORKS.find(network => network.id === chain?.id);
-      if (!findNetwork?.id) findNetwork = TEST_NETWORKS.find(network => network.id === chain?.id);
-      if (findNetwork?.id) setNetworkDetails(findNetwork);
-      else setNetworkDetails(undefined);
-    }, 1000)
-
-    return () => clearTimeout(cleanUp);
+    setCheckConnection(isConnected);
+    let findNetwork = NETWORKS.find(network => network.id === chain?.id);
+    if (!findNetwork?.id) findNetwork = TEST_NETWORKS.find(network => network.id === chain?.id);
+    if (findNetwork?.id) setNetworkDetails(findNetwork);
+    else setNetworkDetails(undefined);
   }, [
     isConnected,
-    address,
     chain
   ])
 
@@ -41,15 +39,17 @@ export default function Header() {
     <>
       <HeaderDesktop
         isConnect={checkConnection}
-        walletAddress={walletAddress}
-        connectedNetwork={connectedNetwork}
+        walletAddress={address}
+        connectedNetwork={chain}
         networkDetails={networkDetails}
+        onCancel={handleCancel}
       />
       <HeaderMobile
         isConnect={checkConnection}
-        walletAddress={walletAddress}
-        connectedNetwork={connectedNetwork}
+        walletAddress={address}
+        connectedNetwork={chain}
         networkDetails={networkDetails}
+        onCancel={handleCancel}
       />
     </>
   );
